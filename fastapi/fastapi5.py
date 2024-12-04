@@ -1,1 +1,0 @@
-# Response Model - Return Type
