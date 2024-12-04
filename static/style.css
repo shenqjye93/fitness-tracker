@@ -1,0 +1,96 @@
+body {
+  
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+  color: #333;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+form div {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input, button {
+  margin: 0 auto;
+  width: 96%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  width: 100%;
+  background: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  background: #f9f9f9;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  
+}
+
+.exercise-details {
+  font-size: 20px;         /* Adjust text size */
+  font-weight: bold;       /* Make the text bold */
+  color: #000000;          /* Green text */
+  background-color: #f9f9f9; /* Light gray background */
+  padding: 5px;            /* Add padding */
+  display: block;   /* Allows padding and margin to behave as expected */
+}
+
+button.delete {
+  background: #dc3545;
+}
+
+button.delete:hover {
+  background: #c7091c;
+} 
+
+button.edit {
+  background: #28a745;
+}
+
+button.edit:hover {
+  background: #08a12c;
+} 

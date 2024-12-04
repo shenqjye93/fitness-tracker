@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Manager</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Exercise Manager</h1>
+
+        <!-- Form to Add/Edit Exercise -->
+        <form id="exerciseForm">
+            <input type="hidden" id="exerciseId" />
+            <div>
+                <label for="name">Name</label>
+                <input type="text" id="name" required />
+            </div>
+            <div>
+                <label for="type">Type</label>
+                <input type="text" id="type" required />
+            </div>
+            <div>
+                <label for="weight">Weight</label>
+                <input type="number" id="weight" step="0.1" required />
+            </div>
+            <button type="submit">Add/Update Exercise</button>
+        </form>
+
+        <!-- Exercise List -->
+        <h2>Exercises</h2>
+        <ul id="exerciseList"></ul>
+    </div>
+
+    <script src="/static/scripts.js"></script>
+</body>
+</html>
