@@ -75,8 +75,15 @@ async def delete_exercise(exercise_id: str):
         write_data(exercises)
         return {"detail": f"exercise {exercise_id} has been deleted"}
 
+
 @app.get("/exercises/")
 async def get_html():
     html_file_path = Path("template/index.html")  # Specify your HTML file path
+    html_content = html_file_path.read_text(encoding="utf-8")
+    return HTMLResponse(content=html_content, status_code=200)
+
+@app.get("/dashboard/", response_class=HTMLResponse)
+async def get_dashboard():
+    html_file_path = Path("template/dashboard.html")  # Specify the dashboard HTML file path
     html_content = html_file_path.read_text(encoding="utf-8")
     return HTMLResponse(content=html_content, status_code=200)
