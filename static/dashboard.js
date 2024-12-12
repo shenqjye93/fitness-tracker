@@ -33,34 +33,34 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    
-    
+
+
     // Update the dashboard
     const updateDashboard = (exercises, selectedExercise) => {
         // Fetch all exercises (or use cached data if available)
-        
-                // Filter exercises based on the selection
-                const filteredExercises = selectedExercise === "all" ? exercises :
-                    Object.values(exercises).filter(ex => ex.name === selectedExercise);
-    
-                // Update total exercises
-                const totalExercises = Object.keys(filteredExercises).length;
-                totalExercisesElem.textContent = totalExercises;
-    
-                // Calculate total weight lifted
-                const totalWeight = Object.values(filteredExercises).reduce((sum, exercise) => sum + exercise.weight, 0);
-                totalWeightElem.textContent = totalWeight.toFixed(2);
-    
-                // Display latest exercises
-                renderLatestExercises(filteredExercises);
 
-                // Update the graph
-                renderWeightGraph(filteredExercises);
+        // Filter exercises based on the selection
+        const filteredExercises = selectedExercise === "all" ? exercises :
+            Object.values(exercises).filter(ex => ex.name === selectedExercise);
+
+        // Update total exercises
+        const totalExercises = Object.keys(filteredExercises).length;
+        totalExercisesElem.textContent = totalExercises;
+
+        // Calculate total weight lifted
+        const totalWeight = Object.values(filteredExercises).reduce((sum, exercise) => sum + exercise.weight, 0);
+        totalWeightElem.textContent = totalWeight.toFixed(2);
+
+        // Display latest exercises
+        renderLatestExercises(filteredExercises);
+
+        // Update the graph
+        renderWeightGraph(filteredExercises);
     };
-            
-    
-    
-    
+
+
+
+
     // Render the latest exercises
     const renderLatestExercises = (exercises) => {
         latestExercisesElem.innerHTML = "";
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     fetchDashboardData();
-    
+
 });
 
 let weightChart; // To hold the Chart.js instance
