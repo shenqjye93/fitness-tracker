@@ -14,19 +14,24 @@ document.addEventListener("DOMContentLoaded", () => {
       exerciseList.innerHTML = "";
       for (const id in exercises) {
           const exercise = exercises[id];
-          const li = document.createElement("li");
-          li.innerHTML = `
-              <span class="exercise-details">
-                    Exercise: ${exercise.name} <br>
-                    Type: ${exercise.type} <br> 
-                    Weight: ${exercise.weight} kg
-                </span>
-              <div>
-                  <button class="edit" onclick="editExercise('${id}')">Edit</button>
-                  <button class="delete" onclick="deleteExercise('${id}')">Delete</button>
-              </div>
-          `;
-          exerciseList.appendChild(li);
+
+          if (exercise.category === "exercise") {
+            const li = document.createElement("li");
+              li.innerHTML = `
+                  <span class="exercise-details">
+                        Exercise: ${exercise.name} <br>
+                        Type: ${exercise.type} <br> 
+                        Weight: ${exercise.weight} kg
+                    </span>
+                  <div>
+                      <button class="edit" onclick="editExercise('${id}')">Edit</button>
+                      <button class="delete" onclick="deleteExercise('${id}')">Delete</button>
+                  </div>
+              `;
+              exerciseList.appendChild(li);
+
+          }
+          
       }
   };
 
@@ -59,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const exercise = await response.json();
 
       document.getElementById("exerciseId").value = id;
+      //document.getElementById("category").value = exercise.category;
       document.getElementById("name").value = exercise.name;
       document.getElementById("weight").value = exercise.weight;
       document.getElementById("type").value = exercise.type;

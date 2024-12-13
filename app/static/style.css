@@ -1,13 +1,59 @@
+/* General Reset */
+body, h1, h2, p, ul, li, a {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body Styling */
 body {
-  
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
   margin: 0;
-  padding: 20px;
+  padding: 0;
 }
 
+/* Layout */
+.layout {
+  display: flex; /* Enables flexbox layout for the main structure */
+}
+
+/* Sidebar (Left Navigation, Sticky) */
+.sidebar {
+  position: sticky;
+    top: 2rem;
+    height: calc(100vh - 4rem);
+    padding-right: 1rem;
+}
+
+/* Navigation Links */
+.navbar {
+  list-style: none; /* Remove bullet points */
+  width: 100%;
+  text-align: left;
+}
+
+.navbar li {
+  width: 100%;
+  justify-content: center;
+}
+
+.navbar a {
+  display: block; /* Make links fill the width */
+  padding: 1em;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+.navbar a:hover {
+  background-color: #0056b3;
+}
+
+/* Main Content */
 .container {
-  max-width: 600px;
+  flex: 1; /* Takes up remaining space next to the sidebar */
+  max-width: 800px; /* Limits the width of the content area */
   margin: 0 auto;
   background: white;
   padding: 20px;
@@ -67,7 +113,6 @@ li {
   margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  
 }
 
 .exercise-details {
@@ -85,7 +130,7 @@ button.delete {
 
 button.delete:hover {
   background: #c7091c;
-} 
+}
 
 button.edit {
   background: #28a745;
@@ -93,7 +138,7 @@ button.edit {
 
 button.edit:hover {
   background: #08a12c;
-} 
+}
 
 #filter {
   width: 200px; /* Adjust width */
