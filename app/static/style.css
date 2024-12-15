@@ -1,3 +1,17 @@
+:root {
+  --bg-color: #000000;
+  --surface-color: #111111;
+  --text-color: #ffffff;
+  --primary-color: #00ffff;
+  --success-color: #00ff95;
+  --muted-color: rgba(255, 255, 255, 0.6);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --hover-bg: rgba(255, 255, 255, 0.05);
+  --gradient-start: rgba(0, 255, 255, 0.05);
+  --gradient-end: rgba(0, 255, 149, 0.05);
+}
+
 /* General Reset */
 body, h1, h2, p, ul, li, a {
   margin: 0;
@@ -8,22 +22,27 @@ body, h1, h2, p, ul, li, a {
 /* Body Styling */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  background-color: #000000;
   margin: 0;
   padding: 0;
 }
 
 /* Layout */
 .layout {
-  display: flex; /* Enables flexbox layout for the main structure */
+  display: grid;
+  grid-template-columns: 240px 1fr 100px;
+  gap: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
 /* Sidebar (Left Navigation, Sticky) */
 .sidebar {
   position: sticky;
-    top: 2rem;
-    height: calc(100vh - 4rem);
-    padding-right: 1rem;
+  top: 2rem;
+  height: calc(100vh - 4rem);
+  padding-right: 1rem;
 }
 
 /* Navigation Links */
@@ -119,7 +138,7 @@ li {
   font-size: 20px;         /* Adjust text size */
   font-weight: bold;       /* Make the text bold */
   color: #000000;          /* Green text */
-  background-color: #f9f9f9; /* Light gray background */
+  
   padding: 5px;            /* Add padding */
   display: block;   /* Allows padding and margin to behave as expected */
 }
