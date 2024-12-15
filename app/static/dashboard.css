@@ -71,21 +71,217 @@
     margin-bottom: 10px;
 }
 
-#latestExercises {
+#latestMetrics {
     list-style: none;
     background: transparent;
     padding: 0;
 }
 
-#latestExercises li {
+#latestMetrics li {
     padding: 5px;
     background: transparent;
 }
 
-#exerciseSummary {
+#metricSummary {
     padding: 5px;
     border-bottom: 1px solid #f3efef;
     background: #dddfe2;
     border: 1px solid #0056b3;
     border-radius: 5px;
 }
+
+:root {
+    --bg-color: #1f2937;
+    --surface-color: #111111;
+    --text-color: #ffffff;
+    --primary-color: #a855f7;
+    --success-color: #00ff95;
+    --muted-color: rgba(255, 255, 255, 0.6);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --hover-bg: rgba(255, 255, 255, 0.05);
+    --gradient-start: rgba(0, 255, 255, 0.05);
+    --gradient-end: rgba(0, 255, 149, 0.05);
+  }
+  /*
+  colours {
+    white: #f8f9f9;
+    black: #2c343c;
+    blue: #3b6dc2;
+    teal:#20abd9;
+    lightpurple: #9c84fb;
+    darkpurple: #5832ed;
+    h2grey: #929aab;
+  }
+    
+  /* General Reset */
+  body, h1, h2, p, ul, li, a {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body Styling */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Layout */
+  .layout {
+    display: grid;
+    grid-template-columns: 240px 1fr 100px;
+    gap: 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  /* Sidebar (Left Navigation, Sticky) */
+  .sidebar {
+    position: sticky;
+    top: 2rem;
+    height: calc(100vh - 4rem);
+    padding-right: 1rem;
+  }
+  
+  /* Navigation Links */
+  .navbar {
+    list-style: none; /* Remove bullet points */
+    width: 100%;
+    text-align: left;
+  }
+  
+  .navbar li {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .navbar a {
+    display: block; /* Make links fill the width */
+    padding: 1em;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .navbar a:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Main Content */
+  .container {
+    flex: 1; /* Takes up remaining space next to the sidebar */
+    max-width: 800px; /* Limits the width of the content area */
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1, h2 {
+    color: #333;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  form div {
+    margin-bottom: 10px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input, button {
+    margin: 0 auto;
+    width: 96%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    width: 100%;
+    background: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background: #0056b3;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    display: flex;
+    justify-content: space-between;
+    background: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .exercise-details {
+    font-size: 20px;         /* Adjust text size */
+    font-weight: bold;       /* Make the text bold */
+    color: #000000;          /* Green text */
+    
+    padding: 5px;            /* Add padding */
+    display: block;   /* Allows padding and margin to behave as expected */
+  }
+  
+  button.delete {
+    background: #dc3545;
+  }
+  
+  button.delete:hover {
+    background: #c7091c;
+  }
+  
+  button.edit {
+    background: #28a745;
+  }
+  
+  button.edit:hover {
+    background: #08a12c;
+  }
+  
+  #filter {
+    width: 200px; /* Adjust width */
+    padding: 10px; /* Add padding */
+    font-size: 16px; /* Font size */
+    color: #ffffff; /* Text color */
+    background-color: #007BFF; /* Background color */
+    border: 1px solid #ccc; /* Border styling */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+    appearance: none; /* Remove default dropdown arrow (for some browsers) */
+    -webkit-appearance: none; /* Remove default arrow for Safari */
+    -moz-appearance: none; /* Remove default arrow for Firefox */
+    cursor: pointer; /* Show pointer cursor */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffffff" width="16" height="16"><path d="M7 10l5 5 5-5z"/></svg>'); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+  
+  /* Style the dropdown options */
+  #filter option {
+    font-size: 14px; /* Option font size */
+    color: #333;
+    background-color: #f9f9f9;
+  }
