@@ -25,3 +25,9 @@ async def get_html():
     html_file_path = Path("template/index-health.html")  # Specify your HTML file path
     html_content = html_file_path.read_text(encoding="utf-8")
     return HTMLResponse(content=html_content, status_code=200)
+
+@app.get("/dashboard/")
+async def get_html():
+    html_file_path = Path("template/index-dashboard.html")  # Specify your HTML file path
+    html_content = html_file_path.read_text(encoding="utf-8")
+    return HTMLResponse(content=html_content, status_code=200)
