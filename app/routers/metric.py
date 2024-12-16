@@ -2,14 +2,26 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from pathlib import Path
+from typing import List
 
 import json
 
 router = APIRouter()
 
-class Metric(BaseModel):
+class Readings(BaseModel):
+    systolic: int
+    diasystolic: int
+    pulse: int
+
+class BP(BaseModel):
     id: int
-    category: str = "metrics"
+    category: str = "metric"
+    type: str
+    level: Readings
+
+class Glucose(BaseModel):
+    id: int
+    category: str = "metric"
     type: str
     level: int
 
@@ -44,8 +56,9 @@ async def get_metric(metrics_id: str):
     else:
         raise HTTPException(status_code=404, detail="Error, metric not found")
     
-@router.post("/create-metrics/{metrics_id}")
-async def create_metric(metrics_id: str, metric: Metric):
+
+@router.post("/create-bp/{metrics_id}")
+async def create_metric(metrics_id: str, metric: BP):
     metrics = read_data()
     if metrics_id in metrics:
         return {"message": "Metric Exists"}
@@ -54,8 +67,30 @@ async def create_metric(metrics_id: str, metric: Metric):
     write_data(metrics)
     return metrics[metrics_id] 
 
-@router.put("/create-metrics/{metrics_id}")
-async def update_metric(metrics_id: str, metric: Metric):
+
+@router.put("/create-bp/{metrics_id}")
+async def update_metric(metrics_id: str, metric: BP):
+    metrics = read_data()
+    if metrics_id not in metrics:
+        raise HTTPException (status_code=404, detail= "Error, metric not found")
+    metrics[metrics_id] = metric.dict() 
+    write_data(metrics)
+    return metrics[metrics_id] 
+
+
+@router.post("/create-glucose/{metrics_id}")
+async def create_metric(metrics_id: str, metric: Glucose):
+    metrics = read_data()
+    if metrics_id in metrics:
+        return {"message": "Metric Exists"}
+    ## updates metrics data with new info
+    metrics[metrics_id] = metric.dict() #metric model is not dict
+    write_data(metrics)
+    return metrics[metrics_id] 
+
+
+@router.put("/create-glucose/{metrics_id}")
+async def update_metric(metrics_id: str, metric: Glucose):
     metrics = read_data()
     if metrics_id not in metrics:
         raise HTTPException (status_code=404, detail= "Error, metric not found")
