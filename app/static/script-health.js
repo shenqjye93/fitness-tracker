@@ -1,7 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const bpForm = document.getElementById("bpForm");
-    const glucoseForm = document.getElementById("glucoseForm");
-    const metricList = document.getElementById("metricList");
+    const bpForm = document.getElementById("bp-form");
+    const glucoseForm = document.getElementById("glucose-form");
+    const metricList = document.getElementById("metric-list");
+
+    const links = document.querySelectorAll('.navbar a');
+        const currentPath = window.location.pathname;
+    
+        links.forEach(link => {
+          if (link.getAttribute('href') === currentPath) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
   
     // Fetch and display exercises
     const fetchMetrics = async () => {
@@ -19,15 +30,19 @@ document.addEventListener("DOMContentLoaded", () => {
             if (metric.type === "bp") {
               const li = document.createElement("li");
                 li.innerHTML = `
-                    <span class="metric-details">
-                          Type: ${metric.type} <br>
-                          Level: ${metric.level['systolic']}/${metric.level['diasystolic']} mmHg <br> 
-                          Pulse: ${metric.level['pulse']} bpm
-                      </span>
-                    <div>
-                        <button class="edit" onclick="editBp('${id}')">Edit</button>
-                        <button class="delete" onclick="deleteMetric('${id}')">Delete</button>
+                <div class="record-item">
+                    <div class="record-details">
+                          <strong>Blood Pressure:</strong> ${metric.level['systolic']}/${metric.level['diasystolic']} mmHg
+                          <br>
+                          <strong>Pulse:</strong> ${metric.level['pulse']} bpm 
+                          <br>
+                          <small>Today, 2:30 PM</small>
                     </div>
+                    <div class="record-actions">
+                        <button class="btn-edit" onclick="editBp('${id}')">Edit</button>
+                        <button class="btn-delete" onclick="deleteMetric('${id}')">Delete</button>
+                    </div>
+                </div>
                 `;
                 metricList.appendChild(li);
             }
@@ -35,14 +50,16 @@ document.addEventListener("DOMContentLoaded", () => {
             if (metric.type === "glucose") {
                 const li = document.createElement("li");
                   li.innerHTML = `
-                      <span class="metric-details">
-                            Type: ${metric.type} <br>
-                            Level: ${metric.level} mmol/L
-                        </span>
-                      <div>
-                          <button class="edit" onclick="editGlucose('${id}')">Edit</button>
-                          <button class="delete" onclick="deleteMetric('${id}')">Delete</button>
-                      </div>
+                <div class="record-item">
+                    <div class="record-details">
+                          <strong> Glucose:</strong> ${metric.level} mmol/L
+                          <br> 
+                          <small>Today, 2:30 PM</small>
+                    </div>
+                    <div class="record-actions">
+                        <button class="btn-edit" onclick="editGlucose('${id}')">Edit</button>
+                        <button class="btn-delete" onclick="deleteMetric('${id}')">Delete</button>
+                    </div>
                   `;
                   metricList.appendChild(li);
     
@@ -60,6 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 diasystolic: document.getElementById("diasystolic").value,
                 pulse: document.getElementById("pulse").value
             };
+            console.log(id);
+            console.log(type);
             console.log(level);
 
 
@@ -70,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({ id: parseInt(id), type, level }),
             });
     
-            document.getElementById("bpForm").reset();
+            document.getElementById("bp-form").reset();
             document.getElementById("userId").value = "";
             fetchMetrics();
     
@@ -90,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({ id: parseInt(id), type, level }),
             });
     
-            document.getElementById("glucoseForm").reset();
+            document.getElementById("glucose-form").reset();
             document.getElementById("userId").value = "";
             fetchMetrics();
     
