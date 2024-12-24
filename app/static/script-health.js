@@ -23,12 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Render metric list
     const renderMetrics = (metrics) => {
+
         metricList.innerHTML = "";
         for (const id in metrics) {
             const metric = metrics[id];
   
             if (metric.type === "bp") {
               const li = document.createElement("li");
+              const day = getRelativeDate(id);
                 li.innerHTML = `
                 <div class="record-item">
                     <div class="record-details">
@@ -36,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
                           <br>
                           <strong>Pulse:</strong> ${metric.level['pulse']} bpm 
                           <br>
-                          <small>Today, 2:30 PM</small>
+                          <small>${day}, 2:30 PM</small>
                     </div>
                     <div class="record-actions">
                         <button class="btn-edit" onclick="editBp('${id}')">Edit</button>
@@ -44,23 +46,26 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </div>
                 `;
+                console.log(day);
                 metricList.appendChild(li);
             }
 
             if (metric.type === "glucose") {
                 const li = document.createElement("li");
+                const day = getRelativeDate(id);
                   li.innerHTML = `
                 <div class="record-item">
                     <div class="record-details">
                           <strong> Glucose:</strong> ${metric.level} mmol/L
                           <br> 
-                          <small>Today, 2:30 PM</small>
+                          <small>${day}, 2:30 PM</small>
                     </div>
                     <div class="record-actions">
                         <button class="btn-edit" onclick="editGlucose('${id}')">Edit</button>
                         <button class="btn-delete" onclick="deleteMetric('${id}')">Delete</button>
                     </div>
                   `;
+                  console.log(day);
                   metricList.appendChild(li);
     
               }
@@ -77,9 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 diasystolic: document.getElementById("diasystolic").value,
                 pulse: document.getElementById("pulse").value
             };
-            console.log(id);
-            console.log(type);
-            console.log(level);
 
 
             const method = document.getElementById("userId").value ? "PUT" : "POST";
@@ -114,6 +116,30 @@ document.addEventListener("DOMContentLoaded", () => {
             fetchMetrics();
     
         });
+        
+        function getRelativeDate(id) {
+            const date = new Date(parseInt(id));
+            const today = new Date();
+            const diffTime = today - date;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            // Set both dates to midnight for comparison
+            const dateDay = new Date(date.setHours(0, 0, 0, 0));
+            const todayDay = new Date(today.setHours(0, 0, 0, 0));
+            
+            // Get day names
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            
+            if (dateDay.getTime() === todayDay.getTime()) {
+            return 'Today';
+            } else if (diffDays === 1) {
+            return 'Yesterday';
+            } else if (diffDays < 7) {
+            return days[date.getDay()];
+            } else {
+            return date.toLocaleDateString();
+            }
+        }
   
     // Edit metric
     window.editBp = async (id) => {

@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let allExercises = {};
     let exerciseChart;
 
+    const summaryList = document.getElementById('data-info')
+    const exerciseFilter = document.getElementById('exercise-filter')
     const links = document.querySelectorAll('.navbar a');
     const currentPath = window.location.pathname;
 
@@ -28,16 +30,18 @@ document.addEventListener('DOMContentLoaded', () => {
             createExerciseChart(exercises);
             createBPChart(metrics);
             createGlucoseChart(metrics);
-            updateStreak();
-            createDynamicExerciseButtons(exercises);
+            // updateStreak();
+            createDynamicDropdown(exercises);
+            renderSummary(exercises);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     }
 
     function createExerciseChart(exercises, filterName = null) {
-        const ctx = document.getElementById('exerciseChart').getContext('2d');
+        const ctx = document.getElementById('exercise-chart').getContext('2d');
         const exerciseData = processExerciseData(exercises, filterName);
+        console.log(exerciseData);
 
         if(exerciseChart) {
             exerciseChart.destroy();
@@ -54,27 +58,36 @@ document.addEventListener('DOMContentLoaded', () => {
                     fill: true,  
                     backgroundColor: 'rgba(156, 132, 251, 0.2)',
                     borderColor: 'rgba(156, 132, 251, 1)',
-                    borderWidth: 1
+                    borderWidth: 3,
+                    tension: 0.4
                 }]
             },
             options: {
                 responsive: true,
                 plugins: {
-                    legend: false
+                    legend: false,
+                    tooltip: {
+                        callbacks: {
+                            label: function(exerciseData) {
+                                return `${exerciseData.raw} kg`
+                            }
+                        }  
+                    }
                 },
+
                 scales: {
                     y: {
                         beginAtZero: true,
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Weight (kg)',
-                            color: '#929aab'
+                            color: '#666666'
                         },
                         grid: {
-                            color: '#929aab'
+                            color: '#333333'
                         },
                         ticks: {
-                            color: '#929aab'
+                            color: '#666666'
                         },
                         border: {
                             color: 'transparent'  
@@ -82,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                     x: {
                         title: {
-                            color: '#929aab'
+                            color: '#666666'
                         },
                         border: {
                             color: 'transparent'  
@@ -91,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             color: 'transparent'
                         },
                         ticks: {
-                            color: '#929aab'
+                            color: '#666666'
                         },
                     }
                 }
@@ -101,22 +114,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function processExerciseData(exercises, filterName = null) {
         const labels = [];
+        const names = [];
         const weights = [];
 
         for (const id in exercises) {
             const exercise = exercises[id];
             if (exercise.category === 'exercise' &&
                 (filterName === null || exercise.name === filterName)) {
-                labels.push(new Date(parseInt(id)).toLocaleDateString());
+                labels.push(getRelativeDate(id));
                 weights.push(exercise.weight);
+                names.push(exercise.name)
             }
         }
 
-        return { labels, weights };
+        return { labels, weights, names };
     }
 
     function createBPChart(metrics) {
-        const ctx = document.getElementById('bpChart').getContext('2d');
+        const ctx = document.getElementById('bp-chart').getContext('2d');
         const bpData = processBPData(metrics);
 
         new Chart(ctx, {
@@ -143,15 +158,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 scales: {
                     y: {
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Blood Pressure (mmHg)',
-                            color: '#929aab'
+                            color: '#666666'
                         },
                         grid: {
-                            color: '#929aab'
+                            color: '#333333'
                         },
                         ticks: {
-                            color: '#929aab'
+                            color: '#666666'
                         },
                         border: {
                             color: 'transparent'  
@@ -162,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             color: 'transparent'
                         },
                         ticks: {
-                            color: '#929aab'
+                            color: '#666666'
                         },
                         border: {
                             color: 'transparent'  
@@ -181,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (const id in metrics) {
             const metric = metrics[id];
             if (metric.type === 'bp') {
-                labels.push(new Date(parseInt(id)).toLocaleDateString());
+                labels.push(getRelativeDate(id));
                 systolic.push(metric.level.systolic);
                 diasystolic.push(metric.level.diasystolic);
             }
@@ -191,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createGlucoseChart(metrics) {
-        const ctx = document.getElementById('glucoseChart').getContext('2d');
+        const ctx = document.getElementById('glucose-chart').getContext('2d');
         const glucoseData = processGlucoseData(metrics);
 
         new Chart(ctx, {
@@ -213,15 +228,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 scales: {
                     y: {
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Glucose (mmol/L)',
-                            color: '#929aab'
+                            color: '#666666'
                         },
                         grid: {
-                            color: '#929aab'
+                            color: '#333333'
                         },
                         ticks: {
-                            color: '#929aab'
+                            color: '#666666'
                         },
                         border: {
                             color: 'transparent'  
@@ -232,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             color: 'transparent'
                         },
                         ticks: {
-                            color: '#929aab'
+                            color: '#666666'
                         },
                         border: {
                             color: 'transparent'  
@@ -244,13 +259,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function processGlucoseData(metrics) {
+        const now = Date.now();
         const labels = [];
         const levels = [];
 
         for (const id in metrics) {
             const metric = metrics[id];
             if (metric.type === 'glucose') {
-                labels.push(new Date(parseInt(id)).toLocaleDateString());
+                labels.push(getRelativeDate(id));
+                console.log(labels);
+                // labels.push(new Date(parseInt(id)).toLocaleDateString());
                 levels.push(metric.level);
             }
         }
@@ -258,43 +276,65 @@ document.addEventListener('DOMContentLoaded', () => {
         return { labels, levels };
     }
 
-    function createDynamicExerciseButtons(exercises) {
-        const exerciseButtonsContainer = document.getElementById('exercise-buttons');
+    function createDynamicDropdown(exercises) {
+        const exerciseDropdownContainer = document.getElementById('exercise-filter');
         const uniqueExerciseTypes = new Set();
-
+                
+        // Clear existing options
+        exerciseDropdownContainer.innerHTML = '<option value="">Filter Exercises</option>';
+        
         for (const id in exercises) {
             const exercise = exercises[id];
             if (exercise.category === 'exercise') {
                 uniqueExerciseTypes.add(exercise.name);
             }
         }
-
+        
+        // Add players to select
         uniqueExerciseTypes.forEach(name => {
-            const button = document.createElement('button');
-            button.textContent = name;
-            button.addEventListener('click', () => {
-                setActiveButton(button);
-                filterExercises(name);
-            });
-               
-            exerciseButtonsContainer.appendChild(button);
-        });
-    }
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = `${name}`;
+            
 
-    function setActiveButton(activeButton) {
-        // Remove "active" class from all buttons
-        const buttons = document.querySelectorAll('.dynamic-buttons button');
-        buttons.forEach(button => button.classList.remove('active'));
-    
-        // Add "active" class to the clicked button
-        activeButton.classList.add('active');
-    }
+            exerciseFilter.addEventListener('change', () => {
+                const selectedName = event.target.value;
+                console.log(selectedName);
+                filterExercises(selectedName);
+            });
+
+            exerciseDropdownContainer.appendChild(option);
+        });
+    };
+        
 
     function filterExercises(name) {
         createExerciseChart(allExercises, name);
-        console.log(`Filtering exercises of type: ${name}`);
-        console.log(`what are allexercises: ${allExercises}`);
     }
+
+    function getRelativeDate(id) {
+        const date = new Date(parseInt(id));
+        const today = new Date();
+        const diffTime = today - date;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        
+        // Set both dates to midnight for comparison
+        const dateDay = new Date(date.setHours(0, 0, 0, 0));
+        const todayDay = new Date(today.setHours(0, 0, 0, 0));
+        
+        // Get day names
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        
+        if (dateDay.getTime() === todayDay.getTime()) {
+          return 'Today';
+        } else if (diffDays === 1) {
+          return 'Yesterday';
+        } else if (diffDays < 7) {
+          return days[date.getDay()];
+        } else {
+          return date.toLocaleDateString();
+        }
+      }
 
     function updateStreak() {
         // Get all exercises
@@ -360,6 +400,25 @@ document.addEventListener('DOMContentLoaded', () => {
         
         return days.join('');
     }
+
+      // Render exercise list
+    const renderSummary = (exercises) => {
+        summaryList.innerHTML = "";
+        for (const id in exercises) {
+            const exercise = exercises[id];
+
+            if (exercise.category === "exercise") {
+            const tr = document.createElement("tr");
+                tr.innerHTML = `
+                        <td>${exercise.name}</td>
+                        <td>45 mins</td>
+                        <td>High</td>
+                        <td>${getRelativeDate(id)}</td>
+                `;
+                summaryList.appendChild(tr);
+            }
+        }
+    };
 
     // Initial data fetch
     fetchData();

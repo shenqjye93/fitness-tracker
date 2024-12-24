@@ -8,219 +8,6 @@
 </head>
 <body>
     <div class="layout">
-        <!-- Navigation Bar -->
-        <nav class="sidebar">
-          <h1>Health</h1>
-            <ul class="navbar">
-                <li><a href="/" class="active">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                    </svg> Dashboard
-                </a></li>
-
-                <li><a href="/exercises/" class="active"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                    <!-- Rotate the entire dumbbell -->
-                    <g transform="rotate(-45, 12, 12)">
-                        <rect x="10.5" y="5.5" width="3" height="14" fill="currentColor" /> 
-                    </g>
-                    <g transform="rotate(45, 12, 12)">
-                      <!-- Bar -->
-                      
-                      <!-- Left weights -->
-                      <ellipse cx="7" cy="12" rx="2.5" ry="4" fill="currentColor" />
-                      <ellipse cx="5" cy="12" rx="2" ry="3.5" fill="currentColor" />
-                      <ellipse cx="3" cy="12" rx="1.5" ry="3" fill="currentColor" />
-                      <!-- Right weights -->
-                      <ellipse cx="17" cy="12" rx="2.5" ry="4" fill="currentColor" />
-                      <ellipse cx="19" cy="12" rx="2" ry="3.5" fill="currentColor" />
-                      <ellipse cx="21" cy="12" rx="1.5" ry="3" fill="currentColor" />
-                    </g>
-                  </svg>
-                  Exercise Log
-                </a></li>
-
-                <li><a href="/metrics/" class="active"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <!-- Heart shape -->
-                    <path d="M12 21s-6-4.35-8.44-8.08C2.1 10.65 3 7.5 5.5 5.85c2.3-1.54 5.6-.64 6.5 1.28 0.9-1.92 4.2-2.82 6.5-1.28C21 7.5 21.9 10.65 20.44 12.92 18 16.65 12 21 12 21z" />
-                    <!-- Heartbeat line -->
-                    <polyline points="3 12 7 12 9 9 11 15 13 10 15 12 21 12" />
-                  </svg>Health Metrics
-                </a></li>
-            </ul>
-        </nav>
-
-        <div class="app-container">
-            <h1>Health Metrics</h1>
-            
-
-
-
-            <!-- Form to Add/Edit Exercise -->
-            <form id="bpForm" class="styled-form">
-                <h2>Blood Pressure</h2>
-                <input type="hidden" id="userId" />
-                <div class="input-group">
-                  <label for="systolic">Systolic  </label>
-                  <label for="diasystolic">/ Diasystolic </label>
-                  <label for="pulse">Pulse </label>
-                </div>
-                <div class="input-group">
-                  <input type="number" id="systolic"  required />
-                  <input type="number" id="diasystolic"  required />
-                  <input type="number" id="pulse"  required />
-                </div>
-                <button type="submit">Save BP</button>
-              </form>
-
-              <form id="glucoseForm" class="styled-form">
-                <h2>Glucose Level</h2>
-                <div class="input-group">
-                    <div class="separate-container">
-                        <input type="number" id="glucose"  required />
-                        <label for="glucose">mmol/L </label>
-                    </div>
-                  </div>
-                  <button type="submit">Save Glucose</button>
-                </form>
-            <!-- Exercise List -->
-            <h2>Logs</h2>
-            <ul id="metricList"></ul>
-        </div>
-    </div>
-
-    
-    <script src="/static/script-health.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const links = document.querySelectorAll('.navbar a');
-        const currentPath = window.location.pathname;
-    
-        links.forEach(link => {
-          if (link.getAttribute('href') === currentPath) {
-            link.classList.add('active');
-          } else {
-            link.classList.remove('active');
-          }
-        });
-      });
-    </script>
-</body>
-</html>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exercise Manager</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-    <div class="layout">
-        <!-- Navigation Bar -->
-        <nav class="sidebar">
-            <h1>Health</h1>
-            <ul class="navbar">
-                <li><a href="/" class="active">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                    </svg> Dashboard
-                </a></li>
-
-                <li><a href="/exercises/" class="active"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                    <!-- Rotate the entire dumbbell -->
-                    <g transform="rotate(-45, 12, 12)">
-                        <rect x="10.5" y="5.5" width="3" height="14" fill="currentColor" /> 
-                    </g>
-                    <g transform="rotate(45, 12, 12)">
-                      <!-- Bar -->
-                      
-                      <!-- Left weights -->
-                      <ellipse cx="7" cy="12" rx="2.5" ry="4" fill="currentColor" />
-                      <ellipse cx="5" cy="12" rx="2" ry="3.5" fill="currentColor" />
-                      <ellipse cx="3" cy="12" rx="1.5" ry="3" fill="currentColor" />
-                      <!-- Right weights -->
-                      <ellipse cx="17" cy="12" rx="2.5" ry="4" fill="currentColor" />
-                      <ellipse cx="19" cy="12" rx="2" ry="3.5" fill="currentColor" />
-                      <ellipse cx="21" cy="12" rx="1.5" ry="3" fill="currentColor" />
-                    </g>
-                  </svg>
-                  Exercise Log
-                </a></li>
-
-                <li><a href="/metrics/" class="active"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <!-- Heart shape -->
-                    <path d="M12 21s-6-4.35-8.44-8.08C2.1 10.65 3 7.5 5.5 5.85c2.3-1.54 5.6-.64 6.5 1.28 0.9-1.92 4.2-2.82 6.5-1.28C21 7.5 21.9 10.65 20.44 12.92 18 16.65 12 21 12 21z" />
-                    <!-- Heartbeat line -->
-                    <polyline points="3 12 7 12 9 9 11 15 13 10 15 12 21 12" />
-                  </svg>Health Metrics
-                </a></li>
-            </ul>
-        </nav>
-
-        <div class="app-container">
-            <h1>Exercise Manager</h1>
-
-
-
-            <!-- Form to Add/Edit Exercise -->
-            <form id="exerciseForm">
-                <input type="hidden" id="userId" />
-                <div>
-                    <label for="name">Name</label>
-                    <input type="text" id="name" required />
-                </div>
-                <div>
-                    <label for="type">Type</label>
-                    <input type="text" id="type" required />
-                </div>
-                <div>
-                    <label for="weight">Weight</label>
-                    <input type="number" id="weight" step="0.1" required />
-                </div>
-
-                <button type="submit">Add/Update Exercise</button>
-            </form>
-
-            <!-- Exercise List -->
-            <h2>Exercises</h2>
-            <ul id="exerciseList"></ul>
-        </div>
-    </div>
-
-    
-    <script src="/static/script-ex.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-          const links = document.querySelectorAll('.navbar a');
-          const currentPath = window.location.pathname;
-      
-          links.forEach(link => {
-            if (link.getAttribute('href') === currentPath) {
-              link.classList.add('active');
-            } else {
-              link.classList.remove('active');
-            }
-          });
-        });
-      </script>
-</body>
-</html>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exercise Manager</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-    <div class="layout">
 
         <!-- Navigation Bar -->
         <nav class="sidebar">
@@ -320,3 +107,300 @@
       </script>
 </body>
 </html>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+  background: #1a1d21;
+  color: #a8b3cf;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 250px;
+  background: #222529;
+  padding: 2rem;
+  border-right: 1px solid #2a2d31;
+}
+
+.sidebar h1 {
+  color: #fff;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.navbar {
+  list-style: none;
+}
+
+.navbar a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #a8b3cf;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.navbar a:hover, .navbar a.active {
+  background: #2a2d31;
+  color: #fff;
+}
+
+/* Main Content Area */
+.dashboard-container {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Statistics Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #222529;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #2a2d31;
+}
+
+.stat-card h3 {
+  color: #fff;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+/* Charts */
+.chart-container {
+  background: #222529;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #2a2d31;
+  margin-bottom: 1.5rem;
+  height: 300px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.chart-header h2 {
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+/* Progress Circle */
+.progress-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: conic-gradient(#4a9eff 0% 75%, #2a2d31 75% 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-circle::after {
+  content: "75%";
+  position: absolute;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Data Table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #2a2d31;
+}
+
+.data-table th {
+  color: #fff;
+  font-weight: 500;
+}
+
+/* Buttons */
+.btn {
+  background: #4a9eff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn:hover {
+  background: #3d8aed;
+}
+
+/* Main Content Area */
+.content-container {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Form Styles */
+.form-container {
+  background: #222529;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #2a2d31;
+  margin-bottom: 2rem;
+}
+
+.form-container h2 {
+  color: #fff;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.input-group {
+  flex: 1;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #2a2d31;
+  background: #1a1d21;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #4a9eff;
+}
+
+button {
+  background: #4a9eff;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #3d8aed;
+}
+
+/* List Styles */
+.list-container {
+  background: #222529;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #2a2d31;
+}
+
+.list-container h2 {
+  color: #fff;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.records-list {
+  list-style: none;
+}
+
+.record-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #2a2d31;
+}
+
+.record-details {
+  flex: 1;
+}
+
+.record-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-edit {
+  background: #2a2d31;
+}
+
+.btn-delete {
+  background: #dc3545;
+}
+
+/* Health Metrics Specific Styles */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.metric-card {
+  background: #222529;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #2a2d31;
+}
+
+.metric-value {
+  font-size: 2rem;
+  color: #fff;
+  margin: 1rem 0;
+}
+
+.metric-label {
+  color: #a8b3cf;
+  font-size: 0.9rem;
+}

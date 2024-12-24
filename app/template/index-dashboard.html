@@ -41,31 +41,43 @@
             <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>Daily Progress</h3>
-                    <div class="progress-circle"></div>
+                    <h3>Exercises
+                        <select class="dashboard-dropdown" id="exercise-filter" > 
+                            <option value="">Filter Exercise</option>
+                        </select>
+                    </h3>
+                    <div class="ex-chart-container">
+                        <div>
+                            <canvas id="exercise-chart" ></canvas>
+                        </div>
+
+                    </div>
                 </div>
+            </div>
+
+            <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>Weekly Stats</h3>
-                    <div class="chart-container">
-                        <!-- Chart placeholder -->
+                    <h3>Blood Pressure</h3>
+                    <div class="metric-chart-container">
+                        <canvas id="bp-chart"></canvas>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <h3>Monthly Overview</h3>
-                    <div class="chart-container">
-                        <!-- Chart placeholder -->
+                    <h3>Blood Glucose</h3>
+                    <div class="metric-chart-container">
+                        <canvas id="glucose-chart"></canvas>
                     </div>
                 </div>
             </div>
 
             <!-- Activity Chart -->
-            <div class="chart-container">
+            <!-- <div class="chart-container">
                 <div class="chart-header">
                     <h2>Activity Timeline</h2>
-                    <button class="btn" id="">Last 7 Days</button>
-                </div>
+                    <button class="dashboard-button" id="">Last 7 Days</button>
+                </div> -->
                 <!-- Chart placeholder -->
-            </div>
+            <!-- </div> -->
 
             <!-- Recent Activities -->
             <div class="stat-card">
@@ -79,20 +91,7 @@
                             <th>Date</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Running</td>
-                            <td>45 mins</td>
-                            <td>High</td>
-                            <td>Today</td>
-                        </tr>
-                        <tr>
-                            <td>Weight Training</td>
-                            <td>60 mins</td>
-                            <td>Medium</td>
-                            <td>Yesterday</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="data-info"></tbody>
                 </table>
             </div>
         </div>
