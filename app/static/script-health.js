@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const bpForm = document.getElementById("bp-form");
     const glucoseForm = document.getElementById("glucose-form");
-    const metricList = document.getElementById("metric-list");
+    const bpList = document.getElementById("bp-list");
+    const glucoseList = document.getElementById("glucose-list");
 
     const links = document.querySelectorAll('.navbar a');
         const currentPath = window.location.pathname;
@@ -24,7 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Render metric list
     const renderMetrics = (metrics) => {
 
-        metricList.innerHTML = "";
+        bpList.innerHTML = "";
+        glucoseList.innerHTML = "";
         for (const id in metrics) {
             const metric = metrics[id];
   
@@ -46,8 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </div>
                 `;
-                console.log(day);
-                metricList.appendChild(li);
+                console.log(bpList)
+                bpList.appendChild(li);
             }
 
             if (metric.type === "glucose") {
@@ -65,9 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <button class="btn-delete" onclick="deleteMetric('${id}')">Delete</button>
                     </div>
                   `;
-                  console.log(day);
-                  metricList.appendChild(li);
-    
+                  glucoseList.appendChild(li);
               }
         }
     };
@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
             fetchMetrics();
     
         });
-        
+
         function getRelativeDate(id) {
             const date = new Date(parseInt(id));
             const today = new Date();

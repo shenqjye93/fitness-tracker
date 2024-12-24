@@ -16,40 +16,65 @@ document.addEventListener("DOMContentLoaded", () => {
     const fetchExercises = async () => {
         const response = await fetch("/exercises");
         const exercises = await response.json();
-        renderExercises(exercises);
+        renderExercises(exercises, 20);
+    };
+
+    const renderExercises = (exercises, limit = null) => {
+        exerciseList.innerHTML = "";
+        
+        const exerciseArray = Object.entries(exercises)
+            .filter(([_, exercise]) => exercise.category === "exercise")
+            .sort(([idA], [idB]) => idB - idA) 
+            .slice(0, limit); 
+        
+        exerciseArray.forEach(([id, exercise]) => {
+            const day = getRelativeDate(id);
+            const li = document.createElement("li");
+            li.innerHTML = `
+                    <li class="record-item">
+                        <div class="record-details">
+                            <strong>${exercise.name}</strong> - ${exercise.weight}kg
+                            <br>
+                            <small>${exercise.type} Training • ${day}, 3:30 PM</small>
+                        </div>
+                        <div class="record-actions">
+                            <button class="btn-edit" onclick="editExercise('${id}')">Edit</button>
+                            <button class="btn-delete" onclick="deleteExercise('${id}')">Delete</button>
+                        </div>
+                    </li>
+            `;
+            exerciseList.appendChild(li);
+        });
     };
 
   // Render exercise list
-    const renderExercises = (exercises) => {   
+    // const renderExercises = (exercises) => {   
         
-        exerciseList.innerHTML = "";
+    //     exerciseList.innerHTML = "";
         
-        for (const id in exercises) {
-            const exercise = exercises[id];
-            // const day = getRelativeDate(id);
-            // console.log(day);
+    //     for (const id in exercises) {
+    //         const exercise = exercises[id];
 
-            if (exercise.category === "exercise") {
-                const day = getRelativeDate(id);
-                console.log(day);
-                const li = document.createElement("li");
-                li.innerHTML = `
-                        <li class="record-item">
-                            <div class="record-details">
-                                <strong>${exercise.name}</strong> - ${exercise.weight}kg
-                                <br>
-                                <small>${exercise.type} Training • ${day}, 3:30 PM</small>
-                            </div>
-                            <div class="record-actions">
-                                <button class="btn-edit" onclick="editExercise('${id}')">Edit</button>
-                                <button class="btn-delete" onclick="deleteExercise('${id}')">Delete</button>
-                            </div>
-                        </li>
-                `;
-                exerciseList.appendChild(li);
-            }
-        }
-    };
+    //         if (exercise.category === "exercise") {
+    //             const day = getRelativeDate(id);
+    //             const li = document.createElement("li");
+    //             li.innerHTML = `
+    //                     <li class="record-item">
+    //                         <div class="record-details">
+    //                             <strong>${exercise.name}</strong> - ${exercise.weight}kg
+    //                             <br>
+    //                             <small>${exercise.type} Training • ${day}, 3:30 PM</small>
+    //                         </div>
+    //                         <div class="record-actions">
+    //                             <button class="btn-edit" onclick="editExercise('${id}')">Edit</button>
+    //                             <button class="btn-delete" onclick="deleteExercise('${id}')">Delete</button>
+    //                         </div>
+    //                     </li>
+    //             `;
+    //             exerciseList.appendChild(li);
+    //         }
+    //     }
+    // };
 
     function getRelativeDate(id) {
         const date = new Date(parseInt(id));

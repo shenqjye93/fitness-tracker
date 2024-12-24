@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             createExerciseChart(exercises);
             createBPChart(metrics);
             createGlucoseChart(metrics);
-            // updateStreak();
+            updateStreak();
             createDynamicDropdown(exercises);
             renderSummary(exercises);
         } catch (error) {
@@ -38,10 +38,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function createExercisePb(exercises, filterName = null) {
+        const prInfo = document.getElementById('pr-info');
+        const exerciseData = processExerciseData(exercises, filterName);
+        console.log(exerciseData);
+
+        prInfo.innerHTML = '';
+        prWeight = Math.max(...exerciseData.weights);
+        
+        const ul = document.createElement('ul');
+        ul.innerHTML = `
+        <small>PR: ${filterName}</small>
+        <br>
+        <strong>${prWeight} kg</strong>`
+
+        prInfo.appendChild(ul);
+
+        
+    }
+
     function createExerciseChart(exercises, filterName = null) {
         const ctx = document.getElementById('exercise-chart').getContext('2d');
         const exerciseData = processExerciseData(exercises, filterName);
-        console.log(exerciseData);
 
         if(exerciseChart) {
             exerciseChart.destroy();
@@ -87,7 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             color: '#333333'
                         },
                         ticks: {
-                            color: '#666666'
+                            color: '#666666',
+                            font: {
+                                weight: 'bold'    
+                            }
                         },
                         border: {
                             color: 'transparent'  
@@ -104,7 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             color: 'transparent'
                         },
                         ticks: {
-                            color: '#666666'
+                            color: '#666666',
+                            font: {
+                                weight: 'bold'    
+                            }
                         },
                     }
                 }
@@ -166,7 +190,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             color: '#333333'
                         },
                         ticks: {
-                            color: '#666666'
+                            color: '#666666',
+                            font: {
+                                weight: 'bold'    
+                            }
                         },
                         border: {
                             color: 'transparent'  
@@ -177,7 +204,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             color: 'transparent'
                         },
                         ticks: {
-                            color: '#666666'
+                            color: '#666666',
+                            font: {
+                                weight: 'bold'    
+                            }
                         },
                         border: {
                             color: 'transparent'  
@@ -236,7 +266,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             color: '#333333'
                         },
                         ticks: {
-                            color: '#666666'
+                            color: '#666666',
+                            font: {
+                                weight: 'bold'    
+                            }
                         },
                         border: {
                             color: 'transparent'  
@@ -247,7 +280,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             color: 'transparent'
                         },
                         ticks: {
-                            color: '#666666'
+                            color: '#666666',
+                            font: {
+                                weight: 'bold'    
+                            }
                         },
                         border: {
                             color: 'transparent'  
@@ -267,8 +303,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const metric = metrics[id];
             if (metric.type === 'glucose') {
                 labels.push(getRelativeDate(id));
-                console.log(labels);
-                // labels.push(new Date(parseInt(id)).toLocaleDateString());
                 levels.push(metric.level);
             }
         }
@@ -299,7 +333,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             exerciseFilter.addEventListener('change', () => {
                 const selectedName = event.target.value;
-                console.log(selectedName);
                 filterExercises(selectedName);
             });
 
@@ -310,6 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function filterExercises(name) {
         createExerciseChart(allExercises, name);
+        createExercisePb(allExercises, name);
     }
 
     function getRelativeDate(id) {
@@ -324,6 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Get day names
         const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         
         if (dateDay.getTime() === todayDay.getTime()) {
           return 'Today';
@@ -331,6 +366,8 @@ document.addEventListener('DOMContentLoaded', () => {
           return 'Yesterday';
         } else if (diffDays < 7) {
           return days[date.getDay()];
+        } else if (diffDays > 28) {
+          return months[date.getMonth()];
         } else {
           return date.toLocaleDateString();
         }
@@ -368,56 +405,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Update streak counter display
                 const streakCounter = document.querySelector('.streak-counter');
                 streakCounter.innerHTML = `
-                   
                     <div class="streak-calendar">
-                        <span id="streakDays" class="streak-number">${currentStreak}</span>
-                        <span class="streak-label">Day</span>
-                        ${generateLastSevenDays(exerciseDates)}
+                        <strong>${currentStreak}</strong>
+                        <br>
+                        <small>Days</small>
                     </div>
                 `;
             });
     }
     
-    function generateLastSevenDays(exerciseDates) {
-        const days = [];
-        const date = new Date();
-        
-        // Generate last 7 days
-        for (let i = 0; i < 7; i++) {
-            const dateString = date.toDateString();
-            const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
-            const hasExercise = exerciseDates.has(dateString);
-            
-            days.unshift(`
-                <div class="day-marker ${hasExercise ? 'logged' : 'missed'}">
-                    <span class="day-name">${dayName}</span>
-                    <span class="day-icon">${hasExercise ? '' : ''}</span>
-                </div>
-            `);
-            
-            date.setDate(date.getDate() - 1);
-        }
-        
-        return days.join('');
-    }
 
-      // Render exercise list
-    const renderSummary = (exercises) => {
+
+      const renderSummary = (exercises, limit = 6) => {
         summaryList.innerHTML = "";
-        for (const id in exercises) {
-            const exercise = exercises[id];
-
-            if (exercise.category === "exercise") {
+        
+        const exerciseArray = Object.entries(exercises)
+            .filter(([_, exercise]) => exercise.category === "exercise")
+            .sort(([idA], [idB]) => idB - idA) 
+            .slice(0, limit); 
+        
+        exerciseArray.forEach(([id, exercise]) => {
             const tr = document.createElement("tr");
-                tr.innerHTML = `
-                        <td>${exercise.name}</td>
-                        <td>45 mins</td>
-                        <td>High</td>
-                        <td>${getRelativeDate(id)}</td>
-                `;
-                summaryList.appendChild(tr);
-            }
-        }
+            tr.innerHTML = `
+                <td>${exercise.name}</td>
+                <td>${exercise.type}</td>
+                <td>${getRelativeDate(id)}</td>
+            `;
+            summaryList.appendChild(tr);
+        });
     };
 
     // Initial data fetch
