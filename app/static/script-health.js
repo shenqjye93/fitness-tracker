@@ -19,7 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const fetchMetrics = async () => {
         const response = await fetch("/metrics");
         const metrics = await response.json();
+        console.log(metrics);
         renderMetrics(metrics);
+
     };
   
     // Render metric list
@@ -36,9 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 li.innerHTML = `
                 <div class="record-item">
                     <div class="record-details">
-                          <strong>Blood Pressure:</strong> ${metric.level['systolic']}/${metric.level['diasystolic']} mmHg
+                          <strong>Blood Pressure:</strong> ${metric.systolic}/${metric.diasystolic} mmHg
                           <br>
-                          <strong>Pulse:</strong> ${metric.level['pulse']} bpm 
+                          <strong>Pulse:</strong> ${metric.pulse} bpm 
                           <br>
                           <small>${day}, 2:30 PM</small>
                     </div>
@@ -77,18 +79,20 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const id = document.getElementById("userId").value || Date.now().toString();
             const type = "bp";
-            const level = {
-                systolic: document.getElementById("systolic").value,
-                diasystolic: document.getElementById("diasystolic").value,
-                pulse: document.getElementById("pulse").value
-            };
+            const systolic = document.getElementById("systolic").value;
+            const diasystolic = document.getElementById("diasystolic").value;
+            const pulse = document.getElementById("pulse").value;
+            console.log(id)
+            console.log(systolic)
+            console.log(diasystolic)
+            console.log(pulse)
 
 
             const method = document.getElementById("userId").value ? "PUT" : "POST";
             await fetch(`/create-bp/${id}`, {
                 method,
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id: parseInt(id), type, level }),
+                body: JSON.stringify({ id: parseInt(id), type, systolic, diasystolic, pulse }),
             });
     
             document.getElementById("bp-form").reset();
@@ -147,9 +151,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const metric = await response.json();
   
         document.getElementById("userId").value = id;
-        document.getElementById("systolic").value = metric.level['systolic']
-        document.getElementById("diasystolic").value = metric.level['diasystolic']
-        document.getElementById("pulse").value = metric.level['pulse']
+        document.getElementById("systolic").value = metric.systolic
+        document.getElementById("diasystolic").value = metric.diasystolic
+        document.getElementById("pulse").value = metric.pulse
     };
 
     window.editGlucose = async (id) => {

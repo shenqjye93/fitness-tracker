@@ -13,10 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Fetch and display exercises
-    const fetchExercises = async () => {
-        const response = await fetch("/exercises");
+    const fetchExercises = async (limit=20) => {
+        const response = await fetch(`/exercises?limit=${limit}`);
         const exercises = await response.json();
-        renderExercises(exercises, 20);
+        renderExercises(exercises, limit);
     };
 
     const renderExercises = (exercises, limit = null) => {
@@ -26,7 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
             .filter(([_, exercise]) => exercise.category === "exercise")
             .sort(([idA], [idB]) => idB - idA) 
             .slice(0, limit); 
-        
+
+
         exerciseArray.forEach(([id, exercise]) => {
             const day = getRelativeDate(id);
             const li = document.createElement("li");
@@ -47,34 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-  // Render exercise list
-    // const renderExercises = (exercises) => {   
-        
-    //     exerciseList.innerHTML = "";
-        
-    //     for (const id in exercises) {
-    //         const exercise = exercises[id];
 
-    //         if (exercise.category === "exercise") {
-    //             const day = getRelativeDate(id);
-    //             const li = document.createElement("li");
-    //             li.innerHTML = `
-    //                     <li class="record-item">
-    //                         <div class="record-details">
-    //                             <strong>${exercise.name}</strong> - ${exercise.weight}kg
-    //                             <br>
-    //                             <small>${exercise.type} Training • ${day}, 3:30 PM</small>
-    //                         </div>
-    //                         <div class="record-actions">
-    //                             <button class="btn-edit" onclick="editExercise('${id}')">Edit</button>
-    //                             <button class="btn-delete" onclick="deleteExercise('${id}')">Delete</button>
-    //                         </div>
-    //                     </li>
-    //             `;
-    //             exerciseList.appendChild(li);
-    //         }
-    //     }
-    // };
 
     function getRelativeDate(id) {
         const date = new Date(parseInt(id));
@@ -130,7 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const exercise = await response.json();
 
         document.getElementById("userId").value = id;
-        //document.getElementById("category").value = exercise.category;
         document.getElementById("name").value = exercise.name;
         document.getElementById("weight").value = exercise.weight;
         document.getElementById("type").value = exercise.type;
@@ -138,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Delete exercise
     window.deleteExercise = async (id) => {
+        console.log(`delete id: ${id}`)
         await fetch(`/delete-exercises/${id}`, { method: "DELETE" });
         fetchExercises();
     };

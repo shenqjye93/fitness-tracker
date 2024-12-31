@@ -227,8 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const metric = metrics[id];
             if (metric.type === 'bp') {
                 labels.push(getRelativeDate(id));
-                systolic.push(metric.level.systolic);
-                diasystolic.push(metric.level.diasystolic);
+                systolic.push(metric.systolic);
+                diasystolic.push(metric.diasystolic);
             }
         }
 

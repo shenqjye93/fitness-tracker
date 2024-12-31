@@ -10,7 +10,6 @@ def get_project_paths():
     """
     # Get the app directory (parent of the migration directory)
     app_dir = Path(__file__).parent.parent
-    print(f'app_dir: {app_dir}')
 
     # Define paths relative to app directory
     json_path = app_dir / 'data' / 'data.json'
@@ -24,32 +23,22 @@ def create_tables(cursor: sqlite3.Cursor) -> None:
     """
 
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS bp_metrics (
+    CREATE TABLE IF NOT EXISTS health_metrics (
         id INTEGER PRIMARY KEY,
-        timestamp INTEGER,
         category TEXT,
         type TEXT,
         systolic INTEGER,
         diasystolic INTEGER,
-        pulse INTEGER                 
+        pulse INTEGER,
+        level INTERGER                           
     )
     """)
-    # Create glucose metrics table
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS glucose_metrics (
-        id INTEGER PRIMARY KEY,
-        timestamp INTEGER,
-        category TEXT,
-        type TEXT,
-        level INTEGER
-    )
-    """)
+
     
     # Create exercise metrics table
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS exercise_metrics (
         id INTEGER PRIMARY KEY,
-        timestamp INTEGER,
         category TEXT,
         name TEXT,
         type TEXT,
@@ -67,26 +56,25 @@ def insert_data(cursor: sqlite3.Cursor, data: Dict[str, Any]) -> None:
     """
     # Prepare statements for each table
     bp_insert = """
-    INSERT INTO bp_metrics (id, timestamp, category, type, systolic, diasystolic, pulse)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO health_metrics (id,  category, type, systolic, diasystolic, pulse, level)
+    VALUES (?, ?, ?, ?, ?, ?, NULL)
     """
     
     glucose_insert = """
-    INSERT INTO glucose_metrics (id, timestamp, category, type, level)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO health_metrics (id,  category, type, systolic, diasystolic, pulse, level)
+    VALUES (?, ?, ?, NULL, NULL, NULL, ?)
     """
     
     exercise_insert = """
-    INSERT INTO exercise_metrics (id, timestamp, category, name, type, weight)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO exercise_metrics (id,  category, name, type, weight)
+    VALUES (?, ?, ?, ?, ?)
     """
     
     # Process each record
-    for timestamp, record in data.items():
+    for key, record in data.items():
         if record['category'] == 'metric' and record['type'] == 'glucose':
             cursor.execute(glucose_insert, (
                 record['id'],
-                int(timestamp),
                 record['category'],
                 record['type'],
                 record['level']
@@ -94,7 +82,6 @@ def insert_data(cursor: sqlite3.Cursor, data: Dict[str, Any]) -> None:
         elif record['category'] == 'metric' and record['type'] == 'bp':
             cursor.execute(bp_insert, (
                 record['id'],
-                int(timestamp),
                 record['category'],
                 record['type'],
                 record['level']['systolic'],
@@ -104,7 +91,6 @@ def insert_data(cursor: sqlite3.Cursor, data: Dict[str, Any]) -> None:
         elif record['category'] == 'exercise':
             cursor.execute(exercise_insert, (
                 record['id'],
-                int(timestamp),
                 record['category'],
                 record['name'],
                 record['type'],
@@ -142,8 +128,6 @@ def json_to_sqlite(json_file_path: str, db_file_path: str) -> None:
 if __name__ == "__main__":
     # Get project paths
     json_file_path, db_file_path = get_project_paths()
-    print(json_file_path)
-    print(db_file_path)
 
     try:
         json_to_sqlite(json_file_path, db_file_path)
@@ -153,12 +137,12 @@ if __name__ == "__main__":
         with sqlite3.connect(db_file_path) as conn:
             cursor = conn.cursor()
             print("\nSample bp readings:")
-            cursor.execute("SELECT * FROM bp_metrics LIMIT 3")
+            cursor.execute("SELECT * FROM health_metrics WHERE type = ? LIMIT 3", ('bp',))
             print(cursor.fetchall())
 
             cursor = conn.cursor()
             print("\nSample glucose readings:")
-            cursor.execute("SELECT * FROM glucose_metrics LIMIT 3")
+            cursor.execute("SELECT * FROM health_metrics WHERE type = ? LIMIT 3", ('glucose',))
             print(cursor.fetchall())
             
             print("\nSample exercise records:")
