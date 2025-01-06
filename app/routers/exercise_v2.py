@@ -9,7 +9,8 @@ router = APIRouter()
 
 
 class Exercise(BaseModel):
-    id: int
+    id: int    
+    user_id: int
     category: str = "exercise"
     name: str
     type: str
@@ -17,6 +18,7 @@ class Exercise(BaseModel):
 
 class BP(BaseModel):
     id: int
+    user_id: int
     category: str = "metric"
     type: str
     systolic: int
@@ -25,9 +27,15 @@ class BP(BaseModel):
 
 class Glucose(BaseModel):
     id: int
+    user_id: int    
     category: str = "metric"
     type: str
     level: int
+
+class User_info(BaseModel):
+    id: int
+    username: str
+    password: str
 
 # Database connection context manager
 @contextmanager
@@ -38,6 +46,68 @@ def get_db():
         yield conn
     finally:
         conn.close()
+
+def migrate():
+    conn = sqlite3.connect('data/health_metrics.sqlite')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("PRAGMA table_info(exercise_metrics);")
+    columns = [col[1] for col in cursor.fetchall()]
+    if 'user_id' not in columns:
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS exercise_metrics_new (
+                id INTEGER PRIMARY KEY,
+                category TEXT,
+                name TEXT,
+                type TEXT,
+                weight REAL,
+                user_id INTEGER,
+                FOREIGN KEY (user_id) REFERENCES users_info(id)
+            );
+        """)
+
+        cursor.execute("""
+            INSERT INTO exercise_metrics_new (id, category, name, type, weight)
+            SELECT id, category, name, type, weight FROM exercise_metrics;
+        """)
+
+        cursor.execute("DROP TABLE exercise_metrics;")
+        cursor.execute("ALTER TABLE exercise_metrics_new RENAME TO exercise_metrics;")
+
+    cursor.execute("PRAGMA table_info(health_metrics);")
+    columns = [col[1] for col in cursor.fetchall()]
+    if 'user_id' not in columns:
+        # Create a new table with user_id as foreign key
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS health_metrics_new (
+                id INTEGER PRIMARY KEY,
+                category TEXT,
+                type TEXT,
+                systolic INTEGER,
+                diasystolic INTEGER,
+                pulse INTEGER,
+                level INTEGER,
+                user_id INTEGER,
+                FOREIGN KEY (user_id) REFERENCES users_info(id)
+            );
+        """)
+
+        cursor.execute("""
+            INSERT INTO health_metrics_new (id, category, type, systolic, diasystolic, pulse, level)
+            SELECT id, category, type, systolic, diasystolic, pulse, level FROM health_metrics;
+        """)
+
+        cursor.execute("DROP TABLE health_metrics;")
+        cursor.execute("ALTER TABLE health_metrics_new RENAME TO health_metrics;")
+
+    conn.commit()
+    conn.close()
+    print("Migration completed!")
+
+if __name__ == "__main__":
+    migrate()
 
 @router.get("/exercises")
 async def get_exercise(limit: int=20):
@@ -90,24 +160,6 @@ async def get_exercise(exercise_id: int):
         
         return dict(exercise)
     
-@router.get("/get-metrics/{metrics_id}")
-async def get_metric(metrics_id: int):
-    with get_db() as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            "SELECT * FROM health_metrics WHERE id = ?",
-            (metrics_id,)
-        )
-        metric = cursor.fetchone()
-        
-        if not metric:
-            raise HTTPException(
-                status_code=404,
-                detail="Error, metric not found"
-            )
-        
-        return dict(metric)
-
 @router.post("/create-exercises/{exercise_id}")
 async def create_exercise(exercise: Exercise):
     with get_db() as conn:
@@ -143,6 +195,24 @@ async def create_exercise(exercise: Exercise):
             (cursor.lastrowid,)
         )
         return dict(cursor.fetchone())
+    
+@router.get("/get-metrics/{metrics_id}")
+async def get_metric(metrics_id: int):
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT * FROM health_metrics WHERE id = ?",
+            (metrics_id,)
+        )
+        metric = cursor.fetchone()
+        
+        if not metric:
+            raise HTTPException(
+                status_code=404,
+                detail="Error, metric not found"
+            )
+        
+        return dict(metric)
 
 @router.put("/create-exercises/{exercise_id}")
 async def update_exercise(exercise_id: int, exercise: Exercise):
@@ -364,6 +434,7 @@ async def delete_metric(metrics_id: int):
 
 @router.delete("/delete-exercises/{exercise_id}")
 async def delete_exercise(exercise_id: int):
+
     with get_db() as conn:
         cursor = conn.cursor()
         
@@ -389,4 +460,130 @@ async def delete_exercise(exercise_id: int):
         
         return {
             "detail": f"exercise {exercise_id} has been deleted"
+        }
+    
+@router.get("/get-userinfo/{user_id}")
+async def get_user(user_id: int, user_info: User_info):
+    with get_db() as conn:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT * FROM users_info WHERE id = ? ", 
+            (user_id,)
+        )
+
+        user = cursor.fetchone()
+
+        if not user:
+            raise HTTPException(
+                status_code=404,
+                detail="Error, user not found"
+            )
+        
+        return dict(user)
+
+
+@router.post("/create-userinfo/{user_id}")
+async def create_user(user_info: User_info):
+    with get_db() as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users_info (
+            id INTEGER PRIMARY KEY,
+            username TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL
+        )
+        """)
+
+        cursor.execute("""
+            SELECT * FROM users_info 
+            WHERE id = ?
+        """, (user_info.id,))
+
+        if cursor.fetchone():
+            return {"message" : "User exists"}
+
+        cursor.execute("""
+            INSERT INTO users_info
+            (id, username, password)
+            VALUES(?, ?, ?)
+            """,(
+                user_info.id,
+                user_info.username,
+                user_info.password
+            )) 
+        
+        conn.commit()
+
+        cursor.execute(
+            "SELECT * FROM users_info WHERE id = ?",
+            (cursor.lastrowid,)
+        )
+        return dict(cursor.fetchone())
+
+@router.put("/create-userinfo/{user_id}")
+async def update_user(user_id: int, user_info: User_info):
+    with get_db() as conn:
+        cursor = conn.cursor()
+        
+        cursor.execute(
+            "SELECT id FROM users_info WHERE id = ?",
+            (user_id,)
+        )
+        
+        if not cursor.fetchone():
+            raise HTTPException(
+                status_code=404,
+                detail="Error, user not found"
+            )
+        
+        # Update metric
+        cursor.execute("""
+            UPDATE users_info 
+            SET username = ?, password = ? 
+            WHERE id = ?
+        """, (
+                user_info.username,
+                user_info.password,
+                user_id
+        ))
+        
+        conn.commit()
+        
+        # Return updated metric
+        cursor.execute(
+            "SELECT * FROM users_info WHERE id = ?",
+            (user_id,)
+        )
+        return dict(cursor.fetchone())
+    
+@router.delete("/create-userinfo/{user_id}")
+async def delete_user(user_id: int):
+
+    with get_db() as conn:
+        cursor = conn.cursor()
+        
+        # Check if exercise exists
+        cursor.execute(
+            "SELECT id FROM users_info WHERE id = ?",
+            (user_id,)
+        )
+        
+        if not cursor.fetchone():
+            raise HTTPException(
+                status_code=404,
+                detail="Error, User not found"
+            )
+        
+        # Delete exercise
+        cursor.execute(
+            "DELETE FROM users_info WHERE id = ?",
+            (user_id,)
+        )
+        
+        conn.commit()
+        
+        return {
+            "detail": f"user {user_id} has been deleted"
         }
