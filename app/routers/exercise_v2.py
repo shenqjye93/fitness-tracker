@@ -10,7 +10,7 @@ router = APIRouter()
 
 class Exercise(BaseModel):
     id: int    
-    user_id: int
+    # user_id: int
     category: str = "exercise"
     name: str
     type: str
@@ -18,7 +18,7 @@ class Exercise(BaseModel):
 
 class BP(BaseModel):
     id: int
-    user_id: int
+    # user_id: int
     category: str = "metric"
     type: str
     systolic: int
@@ -27,7 +27,7 @@ class BP(BaseModel):
 
 class Glucose(BaseModel):
     id: int
-    user_id: int    
+    # user_id: int    
     category: str = "metric"
     type: str
     level: int
@@ -47,67 +47,6 @@ def get_db():
     finally:
         conn.close()
 
-def migrate():
-    conn = sqlite3.connect('data/health_metrics.sqlite')
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("PRAGMA table_info(exercise_metrics);")
-    columns = [col[1] for col in cursor.fetchall()]
-    if 'user_id' not in columns:
-
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS exercise_metrics_new (
-                id INTEGER PRIMARY KEY,
-                category TEXT,
-                name TEXT,
-                type TEXT,
-                weight REAL,
-                user_id INTEGER,
-                FOREIGN KEY (user_id) REFERENCES users_info(id)
-            );
-        """)
-
-        cursor.execute("""
-            INSERT INTO exercise_metrics_new (id, category, name, type, weight)
-            SELECT id, category, name, type, weight FROM exercise_metrics;
-        """)
-
-        cursor.execute("DROP TABLE exercise_metrics;")
-        cursor.execute("ALTER TABLE exercise_metrics_new RENAME TO exercise_metrics;")
-
-    cursor.execute("PRAGMA table_info(health_metrics);")
-    columns = [col[1] for col in cursor.fetchall()]
-    if 'user_id' not in columns:
-        # Create a new table with user_id as foreign key
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS health_metrics_new (
-                id INTEGER PRIMARY KEY,
-                category TEXT,
-                type TEXT,
-                systolic INTEGER,
-                diasystolic INTEGER,
-                pulse INTEGER,
-                level INTEGER,
-                user_id INTEGER,
-                FOREIGN KEY (user_id) REFERENCES users_info(id)
-            );
-        """)
-
-        cursor.execute("""
-            INSERT INTO health_metrics_new (id, category, type, systolic, diasystolic, pulse, level)
-            SELECT id, category, type, systolic, diasystolic, pulse, level FROM health_metrics;
-        """)
-
-        cursor.execute("DROP TABLE health_metrics;")
-        cursor.execute("ALTER TABLE health_metrics_new RENAME TO health_metrics;")
-
-    conn.commit()
-    conn.close()
-    print("Migration completed!")
-
-if __name__ == "__main__":
-    migrate()
 
 @router.get("/exercises")
 async def get_exercise(limit: int=20):
