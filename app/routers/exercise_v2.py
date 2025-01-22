@@ -3,6 +3,10 @@ from pydantic import BaseModel
 from fastapi.responses import HTMLResponse, JSONResponse
 from contextlib import contextmanager
 import sqlite3
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE_URL = os.path.join(BASE_DIR, 'data', 'health_metrics.sqlite')
 
 
 router = APIRouter()
@@ -40,7 +44,7 @@ class User_info(BaseModel):
 # Database connection context manager
 @contextmanager
 def get_db():
-    conn = sqlite3.connect('data/health_metrics.sqlite')
+    conn = sqlite3.connect(DATABASE_URL)
     conn.row_factory = sqlite3.Row  # Allows accessing columns by name
     try:
         yield conn
