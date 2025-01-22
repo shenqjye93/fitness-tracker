@@ -4,6 +4,10 @@ from routers import exercise_v2
 from fastapi.responses import HTMLResponse
 from pathlib import Path
 
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'data', 'health_metrics.sqlite')}"
 
 app = FastAPI()
 
