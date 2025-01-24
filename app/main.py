@@ -3,11 +3,14 @@ from fastapi.staticfiles import StaticFiles
 from routers import exercise_v2
 from fastapi.responses import HTMLResponse
 from pathlib import Path
+from databases import Database
 
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'data', 'health_metrics.sqlite')}"
+
+database = Database(DATABASE_URL)
 
 app = FastAPI()
 
@@ -40,3 +43,12 @@ async def get_html():
     html_file_path = Path("template/exp.html")  # Specify your HTML file path
     html_content = html_file_path.read_text(encoding="utf-8")
     return HTMLResponse(content=html_content, status_code=200)
+
+@app.on_event("startup")
+async def startup():
+    await database.connect()
+
+@app.on_event("shutdown")
+async def shutdown():
+    await database.disconnect()
+
