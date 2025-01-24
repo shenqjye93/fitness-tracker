@@ -1,10 +1,11 @@
 Learning/
 __pycache__/
 dashboard.py
-data/
+# data/
 fitness_tracker
 fitness_tracker.pub
 template/exp.html
 tutorial.db
 .vscode/
 .env
+data.json
