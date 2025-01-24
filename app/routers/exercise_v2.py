@@ -41,8 +41,6 @@ class User_info(BaseModel):
     password: str
 
 
-print(f"DB_PATH: {DB_PATH}")
-print(f"File exists: {os.path.exists(DB_PATH)}")
 # Database connection context manager
 @contextmanager
 def get_db():
