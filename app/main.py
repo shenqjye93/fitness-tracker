@@ -38,9 +38,9 @@ async def get_html():
     html_content = html_file_path.read_text(encoding="utf-8")
     return HTMLResponse(content=html_content, status_code=200)
 
-@app.get("/1")
+@app.get("/login/")
 async def get_html():
-    html_file_path = Path("template/exp.html")  # Specify your HTML file path
+    html_file_path = Path("template/index-login.html")  # Specify your HTML file path
     html_content = html_file_path.read_text(encoding="utf-8")
     return HTMLResponse(content=html_content, status_code=200)
 
