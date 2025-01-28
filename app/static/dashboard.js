@@ -1,3 +1,11 @@
+function toggleSidebar() {
+	const menu = document.querySelector(".menu-toggle");
+	const icon = document.querySelector(".toggle-sidebar");
+
+	menu.classList.toggle("open");
+	icon.classList.toggle("open");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 	let allExercises = {};
 	let exerciseChart;
@@ -450,6 +458,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			summaryList.appendChild(tr);
 		});
 	};
+
 
 	// Initial data fetch
 	fetchData();

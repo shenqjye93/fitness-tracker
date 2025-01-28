@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health Metrics</title>
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/mediaqueries.css" />
 </head>
 <body>
     <div class="layout">
@@ -34,6 +35,17 @@
             </a></li>
         </ul>
     </nav>
+
+    <div class="menu-toggle" onclick="toggleSidebar()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="toggle-sidebar">
+        <li><a href="/" onclick="toggleSidebar()">Dashboard</a></li>
+        <li><a href="/exercises/" onclick="toggleSidebar()">Exercise Log</a></li>
+        <li><a href="/metrics/" onclick="toggleSidebar()">Health Metrics</a></li>
+    </div>
   
           <div class="content-container">
               <h1 style="color: #fff; margin-bottom: 2rem;">Health Metrics</h1>
@@ -95,5 +107,7 @@
           </div>
       
     <script src="/static/script-health.js"></script>
+	<script src="/static/utils.js"></script>
+
 </body>
 </html>

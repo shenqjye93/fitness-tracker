@@ -11,28 +11,50 @@ body {
 	color: #a8b3cf;
 }
 
+/* NEW: Mobile-first layout */
 .layout {
 	display: grid;
 	min-height: 100vh;
-	grid-template-columns: 1fr;
+	grid-template-columns: 1fr; /* Single column for mobile */
 }
 
-/* Sidebar Styles */
+@media (min-width: 768px) {
+	.layout {
+		grid-template-columns: 250px 1fr; /* Sidebar and main content for tablets */
+	}
+}
+
+@media (min-width: 1024px) {
+	.layout {
+		grid-template-columns: 250px 1fr 250px; /* Full layout for desktops */
+	}
+}
+
+/* NEW: Sidebar responsiveness */
 .sidebar {
-	position: fixed;
+	position: fixed; /* Stick to the top on mobile */
 	top: 0;
-	right: 0;
-	height: auto;
-	width: 100%;
+	left: 0;
+	width: 100%; /* Full width on mobile */
+	height: auto; /* Adjust height */
 	padding: 1rem;
-	z-index: 1000;
-	transform: translateX(-100%);
-	transition: transform 0.5s ease;
-	opacity: 0;
+	z-index: 1000; /* Ensure it's above other content */
+	transform: translateX(-100%); /* Hide sidebar by default */
+	transition: transform 0.3s ease;
 }
 
 .sidebar.active {
-	transform: translateX(0);
+	transform: translateX(0); /* Show sidebar when active */
+}
+
+@media (min-width: 768px) {
+	.sidebar {
+		position: sticky;
+		top: 2rem;
+		width: 250px;
+		height: calc(100vh - 2rem);
+		transform: translateX(0); /* Always visible on larger screens */
+	}
 }
 
 .sidebar h1 {
@@ -75,21 +97,40 @@ body {
 	overflow-y: auto;
 }
 
-/* Statistics Grid */
+/* NEW: Fluid grid for stats */
 .stats-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjusted for smaller screens */
 	gap: 1.5rem;
 	margin-bottom: 1.5rem;
 }
 
 .stats-grid-r1 {
 	display: grid;
-	grid-template-columns: 1fr;
+	grid-template-columns: 1fr; /* Single column for mobile */
 	gap: 1.5rem;
+	margin-bottom: 1.5rem;
 }
 
-.stat-card {
+@media (min-width: 768px) {
+	.stats-grid-r1 {
+		grid-template-columns: calc(75% - 0.75rem) calc(25% - 0.75rem);
+	}
+}
+
+/* NEW: Reusable card styles */
+.card {
+	background: #222529;
+	padding: 1.5rem;
+	border-radius: 12px;
+	border: 1px solid #2a2d31;
+}
+
+.stat-card,
+.chart-container,
+.metric-card,
+.form-container,
+.list-container {
 	background: #222529;
 	padding: 1.5rem;
 	border-radius: 12px;
@@ -105,37 +146,31 @@ body {
 	font-size: 1.1rem;
 }
 
-/* Charts */
+/* NEW: Fluid chart heights */
 .chart-container {
-	background: #222529;
-	padding: 1.5rem;
-	border-radius: 12px;
-	border: 1px solid #2a2d31;
-	margin-bottom: 1.5rem;
-	height: 450px;
-	/* height: auto; */
-	min-height: 300px;
+	height: auto; /* Allow height to adjust */
+	min-height: 300px; /* Set a minimum height */
 }
 
 .ex-chart-container {
-	background: #222529;
-	padding: 1.5rem;
-	border-radius: 12px;
-	border: 1px solid #2a2d31;
-	margin-bottom: 1.5rem;
 	height: auto;
-	width: 100%;
+	min-height: 250px;
 }
 
 .streak-wrapper {
 	display: grid;
-	grid-template-columns: 1fr;
+	grid-template-columns: 1fr; /* Single column for mobile */
 	gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+	.streak-wrapper {
+		grid-template-columns: 1fr 1fr; /* Two columns for larger screens */
+	}
 }
 
 #streak-container,
 #pr-container {
-	color: #fff;
 	text-align: center;
 	justify-content: center;
 	padding: 1rem;
@@ -144,15 +179,6 @@ body {
 #streak-container strong,
 #pr-container strong {
 	font-size: 24px;
-}
-
-#streak-container {
-	background: rgba(156, 132, 251, 1);
-}
-
-
-#pr-container {
-	background: rgb(116, 82, 255);
 }
 
 .dashboard-dropdown {
@@ -166,12 +192,6 @@ body {
 }
 
 .metric-chart-container {
-	background: #222529;
-	padding: 1.5rem;
-	border-radius: 12px;
-	border: 1px solid #2a2d31;
-	margin-bottom: 1.5rem;
-	/* height: 300px; */
 	height: auto;
 	min-height: 250px;
 }
@@ -216,18 +236,17 @@ body {
 
 .metrics-row {
 	display: grid;
-	grid-template-columns: 1fr;
+	grid-template-columns: 1fr; /* Single column for mobile */
 	gap: 1.5rem;
 }
-/* Form Styles */
-.form-container {
-	background: #222529;
-	padding: 2rem;
-	border-radius: 12px;
-	border: 1px solid #2a2d31;
-	margin-bottom: 1.5rem;
+
+@media (min-width: 768px) {
+	.metrics-row {
+		grid-template-columns: 2fr 1fr; /* Two columns for larger screens */
+	}
 }
 
+/* Form Styles */
 .form-container h2 {
 	color: #fff;
 	margin-bottom: 1.5rem;
@@ -303,13 +322,6 @@ button .active {
 }
 
 /* List Styles */
-.list-container {
-	background: #222529;
-	padding: 2rem;
-	border-radius: 12px;
-	border: 1px solid #2a2d31;
-}
-
 .list-container h2 {
 	color: #fff;
 	margin-bottom: 1.5rem;
@@ -353,41 +365,23 @@ button .active {
 	background: #a70616;
 }
 
-/* Health Metrics Specific Styles */
-.metrics-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-	gap: 1.5rem;
-	margin-bottom: 1.5rem;
-}
-
-.metric-card {
-	background: #222529;
-	padding: 1.5rem;
-	border-radius: 12px;
-	border: 1px solid #2a2d31;
-}
-
-.metric-value {
-	font-size: 2rem;
-	color: #fff;
-	margin: 1rem 0;
-}
-
-.metric-label {
-	color: #a8b3cf;
-	font-size: 0.9rem;
-}
-
+/* NEW: Hamburger menu for mobile */
 .menu-toggle {
-	display: none;
+	display: none; /* Hide by default */
 }
 
-.toggle-sidebar {
-	display: none;
+@media (max-width: 768px) {
+	.menu-toggle {
+		display: block; /* Show on mobile */
+		position: fixed;
+		top: 1rem;
+		right: 1rem;
+		z-index: 1001;
+		background: #4a9eff;
+		color: #fff;
+		border: none;
+		padding: 0.5rem 1rem;
+		border-radius: 6px;
+		cursor: pointer;
+	}
 }
-
-/* .toggle-sidebar a li {
-	display: none;
-} */
-
