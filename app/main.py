@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from routers import exercise_v2
+from routers import user_management
 from fastapi.responses import HTMLResponse
 from pathlib import Path
 from databases import Database
@@ -19,6 +20,7 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.include_router(exercise_v2.router,  tags=["Health Metrics"])
+app.include_router(user_management.router,  tags=["Login"])
 
 @app.get("/exercises/")
 async def get_html():
@@ -32,13 +34,13 @@ async def get_html():
     html_content = html_file_path.read_text(encoding="utf-8")
     return HTMLResponse(content=html_content, status_code=200)
 
-@app.get("/")
+@app.get("/dashboard/")
 async def get_html():
     html_file_path = Path("template/index-dashboard.html")  
     html_content = html_file_path.read_text(encoding="utf-8")
     return HTMLResponse(content=html_content, status_code=200)
 
-@app.get("/login/")
+@app.get("/")
 async def get_html():
     html_file_path = Path("template/index-login.html")  # Specify your HTML file path
     html_content = html_file_path.read_text(encoding="utf-8")
