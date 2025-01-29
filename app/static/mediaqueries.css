@@ -1,38 +1,46 @@
 @media (min-width: 768px) {
-    .layout {
-        grid-template-columns: 250px 1fr;
-    }
+	.layout {
+		grid-template-columns: 250px 1fr;
+	}
 
-    .sidebar {
-        position: sticky;
-        top: 2rem;
-        width: 250px;
-        height: calc(100vh - 2rem);
-        transform: translateX(0);
-        opacity: 1;
-    }
+	.sidebar {
+		position: sticky;
+		top: 2rem;
+		width: 250px;
+		height: calc(100vh - 2rem);
+		transform: translateX(0);
+		opacity: 1;
+	}
 
-    .stats-grid-r1 {
-        grid-template-columns: calc(75% - 0.75rem) calc(25% - 0.75rem);
-    }
+	.stats-grid-r1 {
+		grid-template-columns: calc(75% - 0.75rem) calc(25% - 0.75rem);
+	}
 
-    .streak-wrapper {
-		grid-template-columns: 1fr 1fr; 
-    }
+	.streak-wrapper {
+		grid-template-columns: 1fr 1fr;
+	}
 
-    .metrics-row {
-        grid-template-columns: 2fr 1fr;
-    }
+	.metrics-row {
+		grid-template-columns: 2fr 1fr;
+	}
+
+	.user-forms {
+		width: 30%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
 }
 
 @media (min-width: 1024px) {
-    .layout {
-        grid-template-columns: 250px 1fr 250px;
-    }
+	.layout {
+		grid-template-columns: 250px 1fr 250px;
+	}
 }
 
 @media (max-width: 768px) {
-    /* .menu-toggle {
+	/* .menu-toggle {
         display: block; 
 		position: fixed;
 		top: 1rem;
@@ -45,83 +53,82 @@
 		border-radius: 6px;
 		cursor: pointer;
 	} */
-    .menu-toggle.open {
-        text-decoration: none;
-        cursor: pointer;
-    }
-    
-    .menu-toggle.open span:first-child {
-        transform: rotate(45deg) translate(10px, 5px);
-    }
-    
-    .menu-toggle.open span:nth-child(2) {
-        opacity:0;
-    }
-    
-    .menu-toggle.open span:last-child {
-        transform: rotate(-45deg) translate(10px, -5px);
-    }
-    
-    .menu-toggle span:first-child {
-        transform: none;
-    }
-    
-    .menu-toggle span:nth-child(2) {
-        opacity:1;
-    }
-    
-    .menu-toggle span:last-child {
-        transform: none;
-    }
+	.menu-toggle.open {
+		text-decoration: none;
+		cursor: pointer;
+	}
 
-    .menu-toggle {
-        position:fixed;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 24px;
-        width: 30px;
-        cursor: pointer;
-        top: 1rem;
-        right: 1rem;
-        text-decoration: none;
-    }
-    .menu-toggle span {
-        width: 100%;
-        height: 2px;
-        background-color: #fbfbfb;
-        transition: all 300ms ease-in-out;
-    }
+	.menu-toggle.open span:first-child {
+		transform: rotate(45deg) translate(10px, 5px);
+	}
 
-    .toggle-sidebar {
-        display: block;
-        position: fixed;
-        top: 3rem;
-        right: 1rem;
-        background-color: white;
-        width: fit-content;
-        max-height: 0;
-        overflow: hidden;
-        transition: all 300ms ease-in-out;
-        border-radius: 12px;
-    }
+	.menu-toggle.open span:nth-child(2) {
+		opacity: 0;
+	}
 
-    .toggle-sidebar a {
-        display: block;
-        padding: 10px;
-        text-align: center;
-        font-size: 1rem;
-        color: black;
-        text-decoration: none;
-        transition: all 300ms ease-in-out;
-    }
+	.menu-toggle.open span:last-child {
+		transform: rotate(-45deg) translate(10px, -5px);
+	}
 
-    .toggle-sidebar li {
-        list-style: none;
-    }
+	.menu-toggle span:first-child {
+		transform: none;
+	}
 
-    .toggle-sidebar.open {
-        max-height: 400px;
-    }
+	.menu-toggle span:nth-child(2) {
+		opacity: 1;
+	}
 
+	.menu-toggle span:last-child {
+		transform: none;
+	}
+
+	.menu-toggle {
+		position: fixed;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		height: 24px;
+		width: 30px;
+		cursor: pointer;
+		top: 1rem;
+		right: 1rem;
+		text-decoration: none;
+	}
+	.menu-toggle span {
+		width: 100%;
+		height: 2px;
+		background-color: #fbfbfb;
+		transition: all 300ms ease-in-out;
+	}
+
+	.toggle-sidebar {
+		display: block;
+		position: fixed;
+		top: 3rem;
+		right: 1rem;
+		background-color: white;
+		width: fit-content;
+		max-height: 0;
+		overflow: hidden;
+		transition: all 300ms ease-in-out;
+		border-radius: 12px;
+	}
+
+	.toggle-sidebar a {
+		display: block;
+		padding: 10px;
+		text-align: center;
+		font-size: 1rem;
+		color: black;
+		text-decoration: none;
+		transition: all 300ms ease-in-out;
+	}
+
+	.toggle-sidebar li {
+		list-style: none;
+	}
+
+	.toggle-sidebar.open {
+		max-height: 400px;
+	}
 }

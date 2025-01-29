@@ -9,6 +9,7 @@
 body {
 	background: #1a1d21;
 	color: #a8b3cf;
+	/* display: flex; */
 }
 
 .layout {
@@ -149,7 +150,6 @@ body {
 #streak-container {
 	background: rgba(156, 132, 251, 1);
 }
-
 
 #pr-container {
 	background: rgb(116, 82, 255);
@@ -391,3 +391,7 @@ button .active {
 	display: none;
 } */
 
+.user-forms {
+	width: 100%;
+	padding: 2rem;
+}
