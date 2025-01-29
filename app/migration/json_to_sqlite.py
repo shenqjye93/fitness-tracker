@@ -17,10 +17,29 @@ def get_project_paths():
 
     return json_path, db_path
 
+def delete_tables(cursor: sqlite3.Cursor) -> None:
+    table_name = 'users'
+    cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}';")
+    if cursor.fetchone():
+        print(f"Table '{table_name}' exists. Deleting...")
+        cursor.execute(f"DROP TABLE {table_name};")
+        conn.commit()
+    else:
+        print(f"Table '{table_name}' does not exist.")
+        
+
 def create_tables(cursor: sqlite3.Cursor) -> None:
     """
     Create separate tables for different categories of data.
     """
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users_info (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL                         
+    )
+    """)
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS health_metrics (
@@ -34,7 +53,6 @@ def create_tables(cursor: sqlite3.Cursor) -> None:
     )
     """)
 
-    
     # Create exercise metrics table
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS exercise_metrics (
@@ -45,6 +63,10 @@ def create_tables(cursor: sqlite3.Cursor) -> None:
         weight REAL
     )
     """)
+
+    cursor.execute("ALTER TABLE exercise_metrics ADD COLUMN user_id INTEGER REFERENCES users_info(id);")
+    cursor.execute("ALTER TABLE health_metrics ADD COLUMN user_id INTEGER REFERENCES users_info(id);")
+
 
 def insert_data(cursor: sqlite3.Cursor, data: Dict[str, Any]) -> None:
     """
@@ -121,9 +143,12 @@ def json_to_sqlite(json_file_path: str, db_file_path: str) -> None:
         
         # Insert the data
         insert_data(cursor, json_data)
+
+        delete_tables(cursor)
         
         # Commit the changes
         conn.commit()
+  
 
 if __name__ == "__main__":
     # Get project paths
