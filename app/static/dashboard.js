@@ -1,11 +1,3 @@
-function toggleSidebar() {
-	const menu = document.querySelector(".menu-toggle");
-	const icon = document.querySelector(".toggle-sidebar");
-
-	menu.classList.toggle("open");
-	icon.classList.toggle("open");
-}
-
 document.addEventListener("DOMContentLoaded", () => {
 	let allExercises = {};
 	let exerciseChart;
@@ -65,103 +57,208 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	function createExerciseChart(exercises, filterName = null) {
 		const ctx = document.getElementById("exercise-chart").getContext("2d");
-		const exerciseData = processExerciseData(exercises, filterName);
+		const { datasets } = processExerciseData(exercises, filterName);
+		console.log(`createExerciseChart datasets`, datasets[0].data);
 
-		if (exerciseChart) {
-			exerciseChart.destroy();
-		}
+		if (exerciseChart) exerciseChart.destroy();
 
 		exerciseChart = new Chart(ctx, {
 			type: "line",
-			data: {
-				labels: exerciseData.labels,
-				datasets: [
-					{
-						label: "Exercise Weights",
-						data: exerciseData.weights,
-						fill: true,
-						backgroundColor: "rgba(156, 132, 251, 0.2)",
-						borderColor: "rgba(156, 132, 251, 1)",
-						borderWidth: 3,
-						tension: 0.4,
-					},
-				],
-			},
+			data: { datasets },
 			options: {
 				responsive: true,
 				plugins: {
-					legend: false,
+					legend: { display: true }, // Show legend to toggle exercises
 					tooltip: {
 						callbacks: {
-							label: function (exerciseData) {
-								return `${exerciseData.raw} kg`;
-							},
+							label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y} kg`,
 						},
 					},
 				},
-
 				scales: {
-					y: {
-						beginAtZero: true,
-						title: {
-							display: false,
-							text: "Weight (kg)",
-							color: "#666666",
-						},
-						grid: {
-							color: "#333333",
-						},
+					x: {
+						type: "linear", // Use a linear scale instead of 'time'
 						ticks: {
-							color: "#666666",
-							font: {
-								weight: "bold",
+							callback: function (value) {
+								// Format the tick as a date string
+								return new Date(value).toLocaleDateString();
 							},
-						},
-						border: {
-							color: "transparent",
 						},
 					},
-					x: {
-						title: {
-							color: "#666666",
-						},
-						border: {
-							color: "transparent",
-						},
-						grid: {
-							color: "transparent",
-						},
-						ticks: {
-							color: "#666666",
-							font: {
-								weight: "bold",
-							},
-						},
+					// x: {
+					// 	type: "time", // Use time scale
+					// 	time: {
+					// 		unit: "day",
+					// 		tooltipFormat: "DD MMM YYYY",
+					// 	},
+					// 	grid: { color: "#333333" },
+					// 	ticks: { color: "#666666" },
+					// },
+					y: {
+						beginAtZero: true,
+						ticks: { color: "#666666" },
+						grid: { color: "#333333" },
 					},
 				},
 			},
 		});
 	}
+	// function createExerciseChart(exercises, filterName = null) {
+	// 	const ctx = document.getElementById("exercise-chart").getContext("2d");
+	// 	const exerciseData = processExerciseData(exercises, filterName);
 
-	function processExerciseData(exercises, filterName = null) {
-		const labels = [];
-		const names = [];
-		const weights = [];
+	// 	if (exerciseChart) {
+	// 		exerciseChart.destroy();
+	// 	}
 
-		for (const id in exercises) {
-			const exercise = exercises[id];
-			if (
-				exercise.category === "exercise" &&
-				(filterName === null || exercise.name === filterName)
-			) {
-				labels.push(getRelativeDate(id));
-				weights.push(exercise.weight);
-				names.push(exercise.name);
+	// 	exerciseChart = new Chart(ctx, {
+	// 		type: "line",
+	// 		data: {
+	// 			labels: exerciseData.labels,
+	// 			datasets: [
+	// 				{
+	// 					label: "Exercise Weights",
+	// 					data: exerciseData.weights,
+	// 					fill: true,
+	// 					backgroundColor: "rgba(156, 132, 251, 0.2)",
+	// 					borderColor: "rgba(156, 132, 251, 1)",
+	// 					borderWidth: 3,
+	// 					tension: 0.4,
+	// 				},
+	// 			],
+	// 		},
+	// 		options: {
+	// 			responsive: true,
+	// 			plugins: {
+	// 				legend: false,
+	// 				tooltip: {
+	// 					callbacks: {
+	// 						label: function (exerciseData) {
+	// 							return `${exerciseData.raw} kg`;
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+
+	// 			scales: {
+	// 				y: {
+	// 					beginAtZero: true,
+	// 					title: {
+	// 						display: false,
+	// 						text: "Weight (kg)",
+	// 						color: "#666666",
+	// 					},
+	// 					grid: {
+	// 						color: "#333333",
+	// 					},
+	// 					ticks: {
+	// 						color: "#666666",
+	// 						font: {
+	// 							weight: "bold",
+	// 						},
+	// 					},
+	// 					border: {
+	// 						color: "transparent",
+	// 					},
+	// 				},
+	// 				x: {
+	// 					title: {
+	// 						color: "#666666",
+	// 					},
+	// 					border: {
+	// 						color: "transparent",
+	// 					},
+	// 					grid: {
+	// 						color: "transparent",
+	// 					},
+	// 					ticks: {
+	// 						color: "#666666",
+	// 						font: {
+	// 							weight: "bold",
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	});
+	// }
+
+	function processExerciseData(exercisesObj, filterName = null) {
+		//Object.entries converts object data into array [key:values] pair
+		//in my example would be [id(can be used as timestamp): exercises]
+		const entries = Object.entries(exercisesObj);
+
+		const exercisesMap = new Map();
+		entries.forEach(([timestamp, exercise]) => {
+			const { name, weight } = exercise;
+
+			if (filterName && name !== filterName) return;
+
+			const exerciseDate = new Date(Number(timestamp));
+
+			if (!exercisesMap.has(name)) {
+				exercisesMap.set(name, []);
 			}
-		}
 
-		return { labels, weights, names };
+			exercisesMap.get(name).push({
+				x: exerciseDate,
+				y: weight,
+			});
+		});
+
+		// Cannot use forEach because my data is not an Array
+		// exercises.forEach(({name, date, weight}) => {
+		// 	if (filterName && name !== filterName) return;
+		// 	if (!exercisesMap.has(name)) {
+		// 		exercisesMap.set(name, []);
+		// 	}
+
+		// Assign colors to each exercise
+		const colors = generateColors(exercisesMap.size);
+
+		// Convert to datasets array
+		const datasets = Array.from(exercisesMap.entries()).map(
+			([name, data], idx) => ({
+				label: name,
+				data: data.sort((a, b) => a.x - b.x), // Sort by date
+				borderColor: colors[idx],
+				backgroundColor: colors[idx],
+				fill: false,
+				borderWidth: 3,
+				tension: 0.4,
+			})
+		);
+		return { datasets };
 	}
+
+	// Helper to generate distinct colors
+	function generateColors(count) {
+		const colors = [];
+		const hueStep = 360 / count;
+		for (let i = 0; i < count; i++) {
+			colors.push(`hsl(${i * hueStep}, 70%, 50%)`);
+		}
+		return colors;
+	}
+	// function processExerciseData(exercises, filterName = null) {
+	// 	const labels = [];
+	// 	const names = [];
+	// 	const weights = [];
+
+	// 	for (const id in exercises) {
+	// 		const exercise = exercises[id];
+	// 		if (
+	// 			exercise.category === "exercise" &&
+	// 			(filterName === null || exercise.name === filterName)
+	// 		) {
+	// 			labels.push(getRelativeDate(id));
+	// 			weights.push(exercise.weight);
+	// 			names.push(exercise.name);
+	// 		}
+	// 	}
+
+	// 	return { labels, weights, names };
+	// }
 
 	function createBPChart(metrics) {
 		const ctx = document.getElementById("bp-chart").getContext("2d");
@@ -458,7 +555,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			summaryList.appendChild(tr);
 		});
 	};
-
 
 	// Initial data fetch
 	fetchData();
