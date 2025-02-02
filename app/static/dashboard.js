@@ -43,8 +43,13 @@ document.addEventListener("DOMContentLoaded", () => {
 		const exerciseData = processExerciseData(exercises, filterName);
 		console.log(exerciseData);
 
+		const weights = exerciseData.datasets.flatMap((dataset) =>
+			dataset.data.map((point) => point.y)
+		);
+		console.log(weights);
+
 		prInfo.innerHTML = "";
-		prWeight = Math.max(...exerciseData.weights);
+		prWeight = Math.max(...weights);
 
 		const ul = document.createElement("ul");
 		ul.innerHTML = `
@@ -58,17 +63,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	function createExerciseChart(exercises, filterName = null) {
 		const ctx = document.getElementById("exercise-chart").getContext("2d");
 		const { datasets } = processExerciseData(exercises, filterName);
-		console.log(`createExerciseChart datasets`, datasets[0].data);
 
 		if (exerciseChart) exerciseChart.destroy();
 
 		exerciseChart = new Chart(ctx, {
 			type: "line",
-			data: { datasets },
+			data: { datasets: datasets },
 			options: {
 				responsive: true,
 				plugins: {
-					legend: { display: true }, // Show legend to toggle exercises
+					legend: { display: false }, // Show legend to toggle exercises
 					tooltip: {
 						callbacks: {
 							label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y} kg`,
@@ -85,15 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
 							},
 						},
 					},
-					// x: {
-					// 	type: "time", // Use time scale
-					// 	time: {
-					// 		unit: "day",
-					// 		tooltipFormat: "DD MMM YYYY",
-					// 	},
-					// 	grid: { color: "#333333" },
-					// 	ticks: { color: "#666666" },
-					// },
 					y: {
 						beginAtZero: true,
 						ticks: { color: "#666666" },
@@ -212,34 +207,128 @@ document.addEventListener("DOMContentLoaded", () => {
 		// 	if (!exercisesMap.has(name)) {
 		// 		exercisesMap.set(name, []);
 		// 	}
-
-		// Assign colors to each exercise
-		const colors = generateColors(exercisesMap.size);
+		const generateColors = generateChartColors(exercisesMap.size);
 
 		// Convert to datasets array
 		const datasets = Array.from(exercisesMap.entries()).map(
-			([name, data], idx) => ({
-				label: name,
-				data: data.sort((a, b) => a.x - b.x), // Sort by date
-				borderColor: colors[idx],
-				backgroundColor: colors[idx],
-				fill: false,
-				borderWidth: 3,
-				tension: 0.4,
-			})
+			([name, data], idx) => {
+				const color = generateColors[idx % generateColors.length];
+				return {
+					label: name,
+					data: data.sort((a, b) => a.x - b.x), // Sort by date
+					borderColor: color.rgb,
+					backgroundColor: color.rgba,
+					fill: true,
+					borderWidth: 3,
+					tension: 0.4,
+				};
+			}
 		);
 		return { datasets };
 	}
 
-	// Helper to generate distinct colors
-	function generateColors(count) {
-		const colors = [];
-		const hueStep = 360 / count;
-		for (let i = 0; i < count; i++) {
-			colors.push(`hsl(${i * hueStep}, 70%, 50%)`);
+	function adjustLightness(hex, percent) {
+		hex = hex.replace(/^#/, "").trim();
+
+		// Expand shorthand if needed (e.g., "abc" -> "aabbcc")
+		if (hex.length === 3) {
+			hex = hex
+				.split("")
+				.map((ch) => ch + ch)
+				.join("");
 		}
-		return colors;
+
+		const num = parseInt(hex, 16);
+		let r = (num >> 16) & 0xff;
+		let g = (num >> 8) & 0xff;
+		let b = num & 0xff;
+
+		r = Math.min(255, Math.max(0, r + Math.round(255 * (percent / 100))));
+		g = Math.min(255, Math.max(0, g + Math.round(255 * (percent / 100))));
+		b = Math.min(255, Math.max(0, b + Math.round(255 * (percent / 100))));
+
+		return (
+			"#" +
+			[r, g, b]
+				.map((x) => x.toString(16).padStart(2, "0"))
+				.join("")
+				.toUpperCase()
+		);
 	}
+
+	function hexToRgb(hex) {
+		hex = hex.replace(/^#/, "");
+		if (hex.length === 3) {
+			hex = hex
+				.split("")
+				.map((ch) => ch + ch)
+				.join("");
+		}
+		const bigint = parseInt(hex, 16);
+		const r = (bigint >> 16) & 255;
+		const g = (bigint >> 8) & 255;
+		const b = bigint & 255;
+
+		return `rgb(${r}, ${g}, ${b})`;
+	}
+
+	function hexToRgba(hex, alpha) {
+		hex = hex.replace(/^#/, "");
+		if (hex.length === 3) {
+			hex = hex
+				.split("")
+				.map((ch) => ch + ch)
+				.join("");
+		}
+		const bigint = parseInt(hex, 16);
+		const r = (bigint >> 16) & 255;
+		const g = (bigint >> 8) & 255;
+		const b = bigint & 255;
+
+		return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+	}
+
+	function generateChartColors(count, alpha = 0.2) {
+		// Base palette in hex.
+		const baseColors = [
+			"#1779e9",
+			"#4a9eff",
+			"#7452FF", // equivalent to rgb(116,82,255)
+			"#9c84FB", // equivalent to rgb(156,132,251)
+		];
+
+		const colorObjects = [];
+		const baseCount = baseColors.length;
+
+		// Calculate how many variants per base color are needed.
+		const variantsPerBase = Math.ceil(count / baseCount);
+
+		baseColors.forEach((base) => {
+			if (variantsPerBase === 1) {
+				// If only one variant is needed, use the base color.
+				colorObjects.push({
+					rgb: hexToRgb(base),
+					rgba: hexToRgba(base, alpha),
+				});
+			} else {
+				// Generate variants by adjusting lightness.
+				// Variation range: from -10% to +10%.
+				for (let i = 0; i < variantsPerBase; i++) {
+					const variationStep = 20 / (variantsPerBase - 1); // total range 20%
+					const percentAdjustment = -10 + i * variationStep; // from -10% to +10%
+					const variantHex = adjustLightness(base, percentAdjustment);
+					colorObjects.push({
+						rgb: hexToRgb(variantHex),
+						rgba: hexToRgba(variantHex, alpha),
+					});
+				}
+			}
+		});
+
+		// Return exactly the number of colors requested.
+		return colorObjects.slice(0, count);
+	}
+
 	// function processExerciseData(exercises, filterName = null) {
 	// 	const labels = [];
 	// 	const names = [];
