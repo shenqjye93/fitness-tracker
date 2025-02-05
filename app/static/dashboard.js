@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
 						},
 					},
 					y: {
-						beginAtZero: true,
+						beginAtZero: false,
 						ticks: { color: "#666666" },
 						grid: { color: "#333333" },
 					},
@@ -219,8 +219,8 @@ document.addEventListener("DOMContentLoaded", () => {
 					borderColor: color.rgb,
 					backgroundColor: color.rgba,
 					fill: true,
-					borderWidth: 3,
-					tension: 0.4,
+					borderWidth: 1,
+					tension: 0.3,
 				};
 			}
 		);
