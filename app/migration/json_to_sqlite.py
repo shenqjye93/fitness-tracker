@@ -18,7 +18,7 @@ def get_project_paths():
     return json_path, db_path
 
 def delete_tables(cursor: sqlite3.Cursor) -> None:
-    table_name = 'users'
+    table_name = 'users_info'
     cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}';")
     if cursor.fetchone():
         print(f"Table '{table_name}' exists. Deleting...")
@@ -28,6 +28,10 @@ def delete_tables(cursor: sqlite3.Cursor) -> None:
         print(f"Table '{table_name}' does not exist.")
         
 
+def alter_users_info(cursor: sqlite3.Cursor) -> None:
+    cursor.execute("ALTER TABLE users_info RENAME COLUMN id TO user_id;")
+
+
 def create_tables(cursor: sqlite3.Cursor) -> None:
     """
     Create separate tables for different categories of data.
@@ -35,15 +39,17 @@ def create_tables(cursor: sqlite3.Cursor) -> None:
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS users_info (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL                         
+        password_hash TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP                         
     )
     """)
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS health_metrics (
         id INTEGER PRIMARY KEY,
+        user_id INTEGER REFERENCES users_info(user_id),
         category TEXT,
         type TEXT,
         systolic INTEGER,
@@ -57,6 +63,7 @@ def create_tables(cursor: sqlite3.Cursor) -> None:
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS exercise_metrics (
         id INTEGER PRIMARY KEY,
+        user_id INTEGER REFERENCES users_info(user_id),
         category TEXT,
         name TEXT,
         type TEXT,
@@ -64,8 +71,6 @@ def create_tables(cursor: sqlite3.Cursor) -> None:
     )
     """)
 
-    cursor.execute("ALTER TABLE exercise_metrics ADD COLUMN user_id INTEGER REFERENCES users_info(id);")
-    cursor.execute("ALTER TABLE health_metrics ADD COLUMN user_id INTEGER REFERENCES users_info(id);")
 
 
 def insert_data(cursor: sqlite3.Cursor, data: Dict[str, Any]) -> None:
@@ -141,10 +146,11 @@ def json_to_sqlite(json_file_path: str, db_file_path: str) -> None:
         # Create the tables
         create_tables(cursor)
         
-        # Insert the data
-        insert_data(cursor, json_data)
+        # # Insert the data
+        # insert_data(cursor, json_data)
 
-        delete_tables(cursor)
+        # delete_tables(cursor)
+        # alter_users_info(cursor)
         
         # Commit the changes
         conn.commit()

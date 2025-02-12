@@ -1,26 +1,34 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from routers import exercise_v2
-from routers import user_management
+from routers import exercise_v3
+# from routers import user_management
+from starlette.middleware.sessions import SessionMiddleware # Import SessionMiddleware from fastapi.middleware
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from pathlib import Path
 from databases import Database
-
+import secrets
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'data', 'health_metrics.sqlite')}"
+SECRET_KEY = secrets.token_urlsafe(32)
 
 database = Database(DATABASE_URL)
 
 app = FastAPI()
 
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=SECRET_KEY,
+)
+
 # css n js are static files
 # use this code to serve those file when requested 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-app.include_router(exercise_v2.router,  tags=["Health Metrics"])
-app.include_router(user_management.router,  tags=["Login"])
+app.include_router(exercise_v3.router,  tags=["Health Metrics"])
+# app.include_router(user_management.router,  tags=["Login"])
 
 @app.get("/exercises/")
 async def get_html():
@@ -54,3 +62,11 @@ async def startup():
 async def shutdown():
     await database.disconnect()
 
+origins = ["*"]  # Allows all origins - VERY permissive, configure for production
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)

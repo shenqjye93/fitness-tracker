@@ -8,3 +8,5 @@ template/exp.html
 tutorial.db
 .vscode/
 .env
+.venv/
+*.pyc

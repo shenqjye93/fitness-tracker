@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			if (response.ok) {
 				window.location.href = "/dashboard/";
 			} else {
-				alerrt("Login failed. Please try again.");
+				alert("Login failed. Please try again.");
 			}
 		});
 	}
