@@ -1,8 +1,20 @@
-document.addEventListener("DOMContentLoaded", () => {
+import userManagement from "./user-manager-objects.js";
+
+document.addEventListener("DOMContentLoaded", async () => {
 	const exerciseForm = document.getElementById("exercise-form");
 	const exerciseList = document.getElementById("exercise-list");
 	const links = document.querySelectorAll(".navbar a");
 	const currentPath = window.location.pathname;
+	const isLoggedIn = await userManagement.isAuthenticated();
+
+	if (!isLoggedIn) {
+		window.location.href = "/";
+	}
+	console.log(
+		"Welcome,",
+		userManagement.user.username,
+		userManagement.user.user_id
+	);
 
 	links.forEach((link) => {
 		if (link.getAttribute("href") === currentPath) {
@@ -14,7 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Fetch and display exercises
 	const fetchExercises = async (limit = 20) => {
-		const response = await fetch(`/exercises?limit=${limit}`);
+		const response = await fetch(`/exercises?limit=${limit}`, {
+			credentials: "include",
+		});
 		const exercises = await response.json();
 		renderExercises(exercises, limit);
 	};
@@ -73,12 +87,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	exerciseForm.addEventListener("submit", async (e) => {
 		e.preventDefault();
-		const id = document.getElementById("userId").value || Date.now().toString();
+		const id =
+			document.getElementById("exerciseId").value || Date.now().toString();
 		const name = document.getElementById("name").value;
 		const weight = document.getElementById("weight").value;
 		const type = document.getElementById("type").value;
+		const user_id = userManagement.user.user_id;
 
-		const method = document.getElementById("userId").value ? "PUT" : "POST";
+		const method = document.getElementById("exerciseId").value ? "PUT" : "POST";
 		await fetch(`/create-exercises/${id}`, {
 			method,
 			headers: { "Content-Type": "application/json" },
@@ -87,11 +103,12 @@ document.addEventListener("DOMContentLoaded", () => {
 				name,
 				weight: parseFloat(weight),
 				type,
+				user_id,
 			}),
 		});
 
 		document.getElementById("exercise-form").reset();
-		document.getElementById("userId").value = "";
+		document.getElementById("exerciseId").value = "";
 		fetchExercises();
 	});
 
@@ -100,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const response = await fetch(`/get-exercises/${id}`);
 		const exercise = await response.json();
 
-		document.getElementById("userId").value = id;
+		document.getElementById("exerciseId").value = id;
 		document.getElementById("name").value = exercise.name;
 		document.getElementById("weight").value = exercise.weight;
 		document.getElementById("type").value = exercise.type;

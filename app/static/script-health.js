@@ -1,11 +1,22 @@
-document.addEventListener("DOMContentLoaded", () => {
+import userManagement from "./user-manager-objects.js";
+
+document.addEventListener("DOMContentLoaded", async () => {
 	const bpForm = document.getElementById("bp-form");
 	const glucoseForm = document.getElementById("glucose-form");
 	const bpList = document.getElementById("bp-list");
 	const glucoseList = document.getElementById("glucose-list");
-
 	const links = document.querySelectorAll(".navbar a");
 	const currentPath = window.location.pathname;
+	const isLoggedIn = await userManagement.isAuthenticated();
+
+	if (!isLoggedIn) {
+		window.location.href = "/";
+	}
+	console.log(
+		"Welcome,",
+		userManagement.user.username,
+		userManagement.user.user_id
+	);
 
 	links.forEach((link) => {
 		if (link.getAttribute("href") === currentPath) {
@@ -19,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	const fetchMetrics = async () => {
 		const response = await fetch("/metrics");
 		const metrics = await response.json();
-		console.log(metrics);
 		renderMetrics(metrics);
 	};
 
@@ -75,17 +85,15 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Add or update metric
 	bpForm.addEventListener("submit", async (e) => {
 		e.preventDefault();
-		const id = document.getElementById("userId").value || Date.now().toString();
+		const id =
+			document.getElementById("metricId").value || Date.now().toString();
 		const type = "bp";
 		const systolic = document.getElementById("systolic").value;
 		const diasystolic = document.getElementById("diasystolic").value;
 		const pulse = document.getElementById("pulse").value;
-		console.log(id);
-		console.log(systolic);
-		console.log(diasystolic);
-		console.log(pulse);
+		const user_id = userManagement.user.user_id;
 
-		const method = document.getElementById("userId").value ? "PUT" : "POST";
+		const method = document.getElementById("metricId").value ? "PUT" : "POST";
 		await fetch(`/create-bp/${id}`, {
 			method,
 			headers: { "Content-Type": "application/json" },
@@ -95,29 +103,37 @@ document.addEventListener("DOMContentLoaded", () => {
 				systolic,
 				diasystolic,
 				pulse,
+				user_id,
 			}),
 		});
 
 		document.getElementById("bp-form").reset();
-		document.getElementById("userId").value = "";
+		document.getElementById("metricId").value = "";
 		fetchMetrics();
 	});
 
 	glucoseForm.addEventListener("submit", async (e) => {
 		e.preventDefault();
-		const id = document.getElementById("userId").value || Date.now().toString();
+		const id =
+			document.getElementById("metricId").value || Date.now().toString();
 		const type = "glucose";
 		const level = document.getElementById("glucose").value;
+		const user_id = userManagement.user.user_id;
 
-		const method = document.getElementById("userId").value ? "PUT" : "POST";
+		const method = document.getElementById("metricId").value ? "PUT" : "POST";
 		await fetch(`/create-glucose/${id}`, {
 			method,
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ id: parseInt(id), type, level }),
+			body: JSON.stringify({
+				id: parseInt(id),
+				type,
+				level,
+				user_id,
+			}),
 		});
 
 		document.getElementById("glucose-form").reset();
-		document.getElementById("userId").value = "";
+		document.getElementById("metricId").value = "";
 		fetchMetrics();
 	});
 
@@ -150,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const response = await fetch(`/get-metrics/${id}`);
 		const metric = await response.json();
 
-		document.getElementById("userId").value = id;
+		document.getElementById("metricId").value = id;
 		document.getElementById("systolic").value = metric.systolic;
 		document.getElementById("diasystolic").value = metric.diasystolic;
 		document.getElementById("pulse").value = metric.pulse;
@@ -160,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const response = await fetch(`/get-metrics/${id}`);
 		const metric = await response.json();
 
-		document.getElementById("userId").value = id;
+		document.getElementById("metricId").value = id;
 		document.getElementById("glucose").value = metric.level;
 	};
 

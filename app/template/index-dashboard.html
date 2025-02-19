@@ -13,7 +13,7 @@
 				<h1>Health Metrics</h1>
 				<ul class="navbar">
 					<li>
-						<a href="/" class="active">
+						<a href="/dashboard/" class="active">
 							<svg
 								width="20"
 								height="20"
@@ -65,13 +65,17 @@
 
 			<div class="menu-toggle" onclick="toggleSidebar()">
 				<span></span>
-                <span></span>
-                <span></span>
+				<span></span>
+				<span></span>
 			</div>
 			<div class="toggle-sidebar">
-				<li><a href="/" onclick="toggleSidebar()">Dashboard</a></li>
-				<li><a href="/exercises/" onclick="toggleSidebar()">Exercise Log</a></li>
-				<li><a href="/metrics/" onclick="toggleSidebar()">Health Metrics</a></li>
+				<li><a href="/dashboard/" onclick="toggleSidebar()">Dashboard</a></li>
+				<li>
+					<a href="/exercises/" onclick="toggleSidebar()">Exercise Log</a>
+				</li>
+				<li>
+					<a href="/metrics/" onclick="toggleSidebar()">Health Metrics</a>
+				</li>
 			</div>
 
 			<!-- Main Dashboard -->
@@ -139,6 +143,6 @@
 		</div>
 
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-		<script src="/static/dashboard.js"></script>
+		<script type="module" src="/static/dashboard.js"></script>
 	</body>
 </html>

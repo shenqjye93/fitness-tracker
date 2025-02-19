@@ -12,7 +12,7 @@
       <nav class="sidebar">
         <h1>Health Metrics</h1>
         <ul class="navbar">
-            <li><a href="/" >
+            <li><a href="/dashboard/" >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                 </svg>
@@ -42,7 +42,7 @@
         <span></span>
     </div>
     <div class="toggle-sidebar">
-        <li><a href="/" onclick="toggleSidebar()">Dashboard</a></li>
+        <li><a href="/dashboard/" onclick="toggleSidebar()">Dashboard</a></li>
         <li><a href="/exercises/" onclick="toggleSidebar()">Exercise Log</a></li>
         <li><a href="/metrics/" onclick="toggleSidebar()">Health Metrics</a></li>
     </div>
@@ -53,7 +53,7 @@
                 <!-- Blood Pressure Form -->
                 <div class="form-container">
                     <h2>Blood Pressure</h2>
-                    <input type="hidden" id="userId" />
+                    <input type="hidden" id="metricId" />
                     <form id="bp-form">
                         <div class="input-row">
                             <div class="input-group">
@@ -76,7 +76,7 @@
                 <!-- Glucose Form -->
                 <div class="form-container">
                     <h2>Blood Glucose</h2>
-                    <input type="hidden" id="userId" />
+                    <input type="hidden" id="metricId" />
                     <form id="glucose-form">
                         <div class="input-row">
                             <div class="input-group">
@@ -106,7 +106,7 @@
 
           </div>
       
-    <script src="/static/script-health.js"></script>
+    <script type="module" src="/static/script-health.js"></script>
 	<script src="/static/utils.js"></script>
 
 </body>

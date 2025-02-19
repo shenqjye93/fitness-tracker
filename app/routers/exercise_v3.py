@@ -129,7 +129,7 @@ def get_exercise_by_id(db, exercise_id, user_id):
     cursor = db.cursor()
     cursor.execute("""SELECT * 
                    FROM exercise_metrics 
-                   WHERE id = ? AND user_id = ?""", 
+                   WHERE id = ? AND  user_id = ?""", 
                    (exercise_id, user_id))
     return cursor.fetchone()
 
@@ -336,6 +336,7 @@ async def get_exercise(exercise_id: int, current_user: int = Depends(get_current
     
 @router.post("/create-exercises/{exercise_id}", response_model=dict, status_code=status.HTTP_201_CREATED)
 async def create_exercise(exercise: Exercise, current_user: int = Depends(get_current_user)):
+    print("Received exercise data:", exercise)
     with get_db() as conn:
 
         if exercise.user_id != current_user:
@@ -346,7 +347,6 @@ async def create_exercise(exercise: Exercise, current_user: int = Depends(get_cu
         
         insert_exercise(conn, exercise.model_copy(update={'user_id': current_user}))
 
-        # return get_exercise_by_id(conn, exercise.id, current_user)
         return {"message": "Exercise created successfully"}
     
 @router.put("/create-exercises/{exercise_id}", response_model=dict)
@@ -444,10 +444,7 @@ async def create_glucose(metric: Glucose, current_user: int = Depends(get_curren
 @router.put("/create-glucose/{metrics_id}", response_model=dict)
 async def update_glucose(metrics_id: int, metric: Glucose, current_user: int = Depends(get_current_user)):
     with get_db() as conn:
-        
-        if metric.category == "bp":
-            raise HTTPException(status_code=403, detail="Incorrect category")
-
+         
         if metric.id != metrics_id: 
             raise HTTPException(status_code=403, detail="Incorrect Metric ID")
         
