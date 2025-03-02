@@ -1,5 +1,6 @@
-fastapi>=0.100.0
-uvicorn[standard]>=0.23.0
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.1
+pydantic==2.6.1
 databases>=0.5.0
 sqlalchemy>=2.0.0
 aiosqlite
@@ -7,3 +8,4 @@ itsdangerous==2.1.2
 passlib==1.7.4
 starlette==0.36.3
 bcrypt==4.0.1
+python-multipart==0.0.9
