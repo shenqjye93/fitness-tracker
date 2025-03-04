@@ -4,13 +4,20 @@
 
 **Purpose:** This web app is a combination of two important features. Firstly, I am an avid Ultimate Frisbee player, so being able to log my workout would keep me accountable as a player. Secondly, as parents grew older they are required to log their blood pressure (bp) and blood glucose level, so I thought to create a web app so that they can log the details and be able to see a visual representation of their levels.
 
-**Background:** I started off in University as a Mechanical Engineering student. Had Introduction to Programming where I learnt basic data structure and algorithms in C++. Upon graduating, I did not pursue engineering profession and instead, got into teaching. Meanwhile, I was also a part time online tutor - teaching scratch and python to kids and teens, this is where my passion for programming grew. After teaching for 5 years, here I am looking to upskill and break into tech industry.
+**Background:** I started off in University as a Mechanical Engineering student. Had "Introduction to Programming" where I learnt basic data structure and algorithms in C++. Upon graduating, I did not pursue engineering profession and instead, got into teaching. Meanwhile, I was also a part time online tutor - teaching scratch and python to kids and teens, this is where my passion for programming grew. I am intrigued in the endless posibilities to build apps and tools.
 
 ## Getting Started
 
 **Initial Challenges:** I have always been intimidated by the vastness of programming. With countless languages and each with their own syntax and rules, it had always been a huge obstacle for me, perhaps was stuck deeply with decision paralysis.
 
-**Resources and Tools:** - My friend Jian Shen, for pointing me into the right directions and resources to kick start my project, as well as providing me insights and encouragement to finish my project. - FastAPI tutorial documentation - Windows Subsystem for Linux to be able to code in Linux environmnet - Visual Studio Code as my main IDE for this project - PrimeAgent "Last Data Structure and Algorithms Course" to understand more about DSA - Google Data Analysis Course for SQL
+**Resources and Tools:**
+
+- My friend Jian Shen, for pointing me into the right directions and resources to kick start my project, as well as providing me insights and encouragement to finish my project.
+- FastAPI tutorial documentation
+- Windows Subsystem for Linux to be able to code in Linux environmnet
+- Visual Studio Code as my main IDE for this project
+- PrimeAgent "Last Data Structure and Algorithms Course" to understand more about DSA
+- Google Data Analysis Course for SQL
 
 ## Learning the Tools
 
@@ -34,40 +41,58 @@ Using Git and GitHub was also interesting as branching allows me to see the chan
 
 **Project Planning:** I started of with wireframing and thinking about the number of pages I need. I wanted an app that can serve two purposes, log workouts and health readings (blood pressure and glucose level) as well as diplaying the logs in a dashboard.
 
+- [ ] Design ideas from online
+- [ ] Put in excalidraw planning
+
 As a start, I used python FastAPI as backend, vanilla HTML, CSS and JavaScript as frontend and a JSON file as my database. All the key features that I planned to add at that time was done with CRUD in mind.
 
 In the first week of my project, I planned on some of the key features I plan to add in my web app, this is done through wireframing and experimenting with different UIs. Most of my planning was done in Excalidraw as I could easily brainstorm and collaborate ideas.
 
-- [ ] **Development Process:** The development process was an interesting one, being able to implement code was both scary and exciting at the same time.
+- [ ] Put in excalidraw planning
 
-  _Phase 1: Creating a Barebone HTTP server_
+**Development Process:** The development process was an interesting one, being able to implement code was both scary and exciting at the same time.
 
-  - Implemented backend using FastAPI with JSON file as my database.
-  - Created and tested endpoints using OpenAPI's Swagger documentation.
-  - Developed simple UI with vanilla HTML and CSS and using HTMLResponse to serve pages.
-  - Connected my client-server with JavaScript
+_Phase 1: Creating a Barebone HTTP server_
 
-  _Phase 2: Adding Features_
+- Implemented backend using FastAPI with JSON file as my database.
+- Created and tested endpoints using OpenAPI's Swagger documentation.
+- [ ] Swagger doc screenshot?
+- Developed simple UI with vanilla HTML and CSS and using HTMLResponse to serve pages.
+- Connected my client-server with JavaScript
 
-  - Built core application structure with interconnected pages.
-  - Implemented health tracking features such as exercise, blood pressure, and blood glucose level logging
-  - Created a dashboard page to vizualize exercise and metrics tracking.
-  - Improve my data vizualization using Chart.js, here I experimented with line and bar charts to determine the best chart for each category.
-  - Added engagement features: PR tracking, activity feed, and streak counting.
+_Phase 2: Adding Features_
 
-  _Phase 3: Initial Deployment_
+- Built core application structure with interconnected pages.
+- [ ] nav?
+- Implemented health tracking features such as exercise, blood pressure, and blood glucose level logging
+- [ ] Insert logging pages
+- Created a dashboard page to vizualize exercise and metrics tracking.
+- [ ] Insert dashboard page
+- Improve my data vizualization using Chart.js, here I experimented with line and bar charts to determine the best chart for each category.
+- Added engagement features: PR tracking, activity feed, and streak counting.
 
-  - Implemented version control with Git and GitHub as project becomes more complex.
-  - Deployed my application on Render and learnt about environment configuration.
-  - Migrated from JSON storage to SQLite database for improved data management.
+_Phase 3: Initial Deployment_
 
-  _Final Phase: CI/CD_
+- Implemented version control with Git and GitHub as project becomes more complex.
+- Deployed my application on Render and learnt about environment configuration.
+- Migrated from JSON storage to SQLite database for improved data management.
 
-  - Implemented user authentication system with signup and login.
-  - Updated data model with user associations for the application.
-  - Refined testing approach using Postman API for backend testing.
+_Final Phase: CI/CD_
 
-- [ ] ## **Problem-Solving:**
+- Implemented user authentication system with signup and login.
+- [ ] signup page
+- Updated data model with user associations for the application.
+- Refined testing approach using Postman API for backend testing.
+
+## **Problem-Solving:**
+
+One of the first issues I encountered while building my web app was determining the type of data model. I experimented with JavaScript objects and list as I wasn't sure which type of data to start with. Recognizing that my logs would require key and value pairs, I figured that Object data types would be the best.
+
+Secondly, I wasn't very sure how my backend code would work as I am not familiar with backend testing. The testing process was challenging as it require a lot of perserverance and trying to understand my code to solve the problem. I learnt that good error handling and getting familiar with testing APIs will help ease the testing process.
+
+On the frontend side of things, I initially stumble on parsing the right data to my backend. At first, I wasn't entirely sure what are the data that I will be obtaining and how would the parsing process look like. I experimented with my code as well as some trial and error to finally make my frontend code work.
+
+On the design part of my project, I also was having issues with responsiveness. My web app would only work for a laptop sized screen, which can be quite inconvenient. To combat this, I used mediaqueries for my CSS to improve responsiveness.
 
 ## Reflections and Lessons Learned
 
@@ -77,13 +102,16 @@ Wireframing and thinking about design choices helped me to have a brief idea on 
 
 On the other hand, data modelling is also key as a first step in planning. having a clear idea of the information required in my product has helped me plan my project better.Also, gave me insight that it should be the most crucial step in most development.
 
+Good error handling and debugging is also crucial to solve any bugs that arise during development.
+
 Having learnt the hard way, in building any project, version control is important in any project.
 
 **Future Improvements:** Here are a bucketlist of updates that I plan to implement:
 
 - [ ] Allowing users to save their favourite exercises or workouts
+- [ ] Improving dashboard visualization
 - [ ] Improving responsiveness of my dashboard to allow access in various views
 
 ## Conclusion
 
-- [ ] **Final Thoughts:** I hope that this journey into software development would be a great one. To be very honest, I am terrified but at the same time incredibly excited about my pursuing career in software engineering.
+- [ ] **Final Thoughts:** I hope that this journey into software development would be a great one. To be very honest, I am terrified but at the same time incredibly excited about growing my passion in innovating and building tools/ applications.
