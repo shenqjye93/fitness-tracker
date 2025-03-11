@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		console.log(weights);
 
 		prInfo.innerHTML = "";
-		prWeight = Math.max(...weights);
+		const prWeight = Math.max(...weights);
 
 		const ul = document.createElement("ul");
 		ul.innerHTML = `
@@ -229,7 +229,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 					backgroundColor: color.rgba,
 					fill: true,
 					borderWidth: 1,
-					tension: 0.3,
+					tension: 0.069,
 				};
 			}
 		);
@@ -531,18 +531,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 			}
 		}
 
-		// Add players to select
 		uniqueExerciseTypes.forEach((name) => {
 			const option = document.createElement("option");
 			option.value = name;
-			option.textContent = `${name}`;
-
-			exerciseFilter.addEventListener("change", () => {
-				const selectedName = event.target.value;
-				filterExercises(selectedName);
-			});
-
+			option.textContent = name;
 			exerciseDropdownContainer.appendChild(option);
+		});
+
+		exerciseFilter.addEventListener("change", (event) => {
+			const selectedName = event.target.value;
+			filterExercises(selectedName);
 		});
 	}
 
