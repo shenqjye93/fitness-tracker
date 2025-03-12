@@ -60,8 +60,6 @@ In the first week of my project, I planned on some of the key features I plan to
 ![Alt text](app/assets/UI-wireframe.png "wireframe")
 ![Alt text](app/assets/version-control.png "git")
 
-Finally,
-
 **Development Process:** The development process was an interesting one, being able to implement code was both scary and exciting at the same time. It was done is several phases:
 
 _Phase 1: Creating a Barebone HTTP server_
