@@ -94,7 +94,8 @@ _Phase 3: Initial Deployment_
 _Final Phase: CI/CD_
 
 - Implemented user authentication system with signup and login.
-  ![Alt text](app/assets/signup.png "Sign up and Login Page")
+  | ![Alt text](app/assets/signup.png "Sign up and Login Page") |
+  |:--------------------------------:|
 - Updated data model with user associations for the application.
 - Refined testing approach using Postman API for backend testing.
 
