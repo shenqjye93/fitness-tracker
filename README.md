@@ -39,16 +39,26 @@ Using Git and GitHub was also interesting as branching allows me to see the chan
 
 ## Building the Web App
 
-**Project Planning:** I started of with wireframing and thinking about the number of pages I need. I wanted an app that can serve two purposes, log workouts and health readings (blood pressure and glucose level) as well as diplaying the logs in a dashboard.
+**Project Planning:** To start off the project, my planning mainly involved CRUD operations. I wanted an app that can serve two purposes, log workouts and health readings (blood pressure and glucose level) as well as diplaying the logs in a dashboard.
+![Alt text](app/assets/planning.png "CRUD")
 
-- [ ] Design ideas from online
-- [ ] Put in excalidraw planning
+For the web app architecture, I used python FastAPI as backend, vanilla HTML, CSS and JavaScript as frontend and a JSON file as my database. This enabled me to focus on programming principles instead of relying on frameworks to work on my web app.
 
-As a start, I used python FastAPI as backend, vanilla HTML, CSS and JavaScript as frontend and a JSON file as my database. All the key features that I planned to add at that time was done with CRUD in mind.
+![Alt text](app/assets/architecture.png "architecture")
+
+All the key features that I planned to add at that time was done with CRUD in mind. Through researching available dashboards online, I decided to create a UI that suits my style.
+
+Here are some of the dashboard designs that caught my attention:
+
+![Alt text](app/assets/research1.gif "design idea1")
+![Alt text](app/assets/research2.png "design idea2")
 
 In the first week of my project, I planned on some of the key features I plan to add in my web app, this is done through wireframing and experimenting with different UIs. Most of my planning was done in Excalidraw as I could easily brainstorm and collaborate ideas.
 
-- [ ] Put in excalidraw planning
+![Alt text](app/assets/UI-wireframe.png "wireframe")
+![Alt text](app/assets/version-control.png "git")
+
+Finally,
 
 **Development Process:** The development process was an interesting one, being able to implement code was both scary and exciting at the same time. It was done is several phases:
 
@@ -63,6 +73,7 @@ _Phase 1: Creating a Barebone HTTP server_
 _Phase 2: Adding Features_
 
 - Built core application structure with interconnected pages.
+
   ![Alt text](app/assets/nav.png "navigation")
 
 - Implemented health tracking features such as exercise, blood pressure, and blood glucose level logging
