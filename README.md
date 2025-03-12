@@ -110,15 +110,17 @@ On the design part of my project, I also was having issues with responsiveness. 
 
 ## Reflections and Lessons Learned
 
-**Key Takeaways:** I have learnt that good planning and architecture is essential in terms of being successful in my project.
+**Key Takeaways:**
 
-Wireframing and thinking about design choices helped me to have a brief idea on what my final product will look like.
+- I have learnt that good planning and architecture is essential in terms of being successful in my project.
 
-On the other hand, data modelling is also key as a first step in planning. having a clear idea of the information required in my product has helped me plan my project better.Also, gave me insight that it should be the most crucial step in most development.
+- Wireframing and thinking about design choices helped me to have a brief idea on what my final product will look like.
 
-Good error handling and debugging is also crucial to solve any bugs that arise during development.
+- data modelling is also key as a first step in planning. having a clear idea of the information required in my product has helped me plan my project better.Also, gave me insight that it should be the most crucial step in most development.
 
-Having learnt the hard way, in building any project, version control is important in any project.
+- Good error handling and debugging is also crucial to solve any bugs that arise during development.
+
+- Having learnt the hard way, in building any project, version control is important in any project.
 
 **Future Improvements:** Here are a bucketlist of updates that I plan to implement:
 
