@@ -50,7 +50,7 @@ In the first week of my project, I planned on some of the key features I plan to
 
 - [ ] Put in excalidraw planning
 
-**Development Process:** The development process was an interesting one, being able to implement code was both scary and exciting at the same time.
+**Development Process:** The development process was an interesting one, being able to implement code was both scary and exciting at the same time. It was done is several phases:
 
 _Phase 1: Creating a Barebone HTTP server_
 
@@ -80,7 +80,7 @@ _Phase 3: Initial Deployment_
 _Final Phase: CI/CD_
 
 - Implemented user authentication system with signup and login.
-- [ ] signup page
+  ![Alt text](assets/signup.png "Sign up and Login Page")
 - Updated data model with user associations for the application.
 - Refined testing approach using Postman API for backend testing.
 
@@ -109,9 +109,10 @@ Having learnt the hard way, in building any project, version control is importan
 **Future Improvements:** Here are a bucketlist of updates that I plan to implement:
 
 - [ ] Allowing users to save their favourite exercises or workouts
+- [ ] Add a personal touch to the UI by adding "Welcome back 'user'"
 - [ ] Improving dashboard visualization
 - [ ] Improving responsiveness of my dashboard to allow access in various views
 
 ## Conclusion
 
-- [ ] **Final Thoughts:** I hope that this journey into software development would be a great one. To be very honest, I am terrified but at the same time incredibly excited about growing my passion in innovating and building tools/ applications.
+**Final Thoughts:** I hope that this journey into software development would be a great one. To be very honest, I am terrified but at the same time incredibly excited about growing my passion in innovating and building tools/ applications.
