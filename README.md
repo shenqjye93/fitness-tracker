@@ -40,11 +40,16 @@ Using Git and GitHub was also interesting as branching allows me to see the chan
 ## Building the Web App
 
 **Project Planning:** To start off the project, my planning mainly involved CRUD operations. I wanted an app that can serve two purposes, log workouts and health readings (blood pressure and glucose level) as well as diplaying the logs in a dashboard.
-![Alt text](app/assets/planning.png "CRUD")
+
+<div align="center">
+  <img src="app/assets/planning.png" alt="CRUD" width = "800">
+</div>
 
 For the web app architecture, I used python FastAPI as backend, vanilla HTML, CSS and JavaScript as frontend and a JSON file as my database. This enabled me to focus on programming principles instead of relying on frameworks to work on my web app.
 
-![Alt text](app/assets/architecture.png "architecture")
+<div align="center">
+  <img src="app/assets/architecture.png" alt="architecture" width = "800">
+</div>
 
 All the key features that I planned to add at that time was done with CRUD in mind. Through researching available dashboards online, I decided to create a UI that suits my style.
 
