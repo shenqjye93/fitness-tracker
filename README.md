@@ -63,8 +63,8 @@ Here are some of the dashboard designs that caught my attention:
 In the first week of my project, I planned on some of the key features I plan to add in my web app, this is done through wireframing and experimenting with different UIs. Most of my planning was done in Excalidraw as I could easily brainstorm and collaborate ideas.
 
 <div align="center">
-  <img src="app/assets/UI-wireframe.png" alt="wireframe" height = "400">
-  <img src="app/assets/version-control.png" alt="vc" height = "400">
+  <img src="app/assets/UI-wireframe.png" alt="wireframe" height = "300">
+  <img src="app/assets/version-control.png" alt="vc" height = "300">
 </div>
 
 **Development Process:** The development process was an interesting one, being able to implement code was both scary and exciting at the same time. It was done is several phases:
