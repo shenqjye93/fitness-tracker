@@ -50,8 +50,10 @@ All the key features that I planned to add at that time was done with CRUD in mi
 
 Here are some of the dashboard designs that caught my attention:
 
-![Alt text](app/assets/research1.gif "design idea1")
-![Alt text](app/assets/research2.png "design idea2")
+1. Fitness tracker app
+   ![Alt text](app/assets/research1.gif "design idea1")
+2. Diving app
+   ![Alt text](app/assets/research2.png "design idea2")
 
 In the first week of my project, I planned on some of the key features I plan to add in my web app, this is done through wireframing and experimenting with different UIs. Most of my planning was done in Excalidraw as I could easily brainstorm and collaborate ideas.
 
@@ -66,7 +68,8 @@ _Phase 1: Creating a Barebone HTTP server_
 
 - Implemented backend using FastAPI with JSON file as my database.
 - Created and tested endpoints using OpenAPI's Swagger documentation.
-- [ ] Swagger doc screenshot?
+  ![Alt text](app/assets/swagger.png "testing")
+
 - Developed simple UI with vanilla HTML and CSS and using HTMLResponse to serve pages.
 - Connected my client-server with JavaScript
 
