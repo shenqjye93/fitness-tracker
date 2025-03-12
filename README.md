@@ -63,11 +63,13 @@ _Phase 1: Creating a Barebone HTTP server_
 _Phase 2: Adding Features_
 
 - Built core application structure with interconnected pages.
-- [ ] nav?
+  ![Alt text](app/assets/nav.png "navigation")
+
 - Implemented health tracking features such as exercise, blood pressure, and blood glucose level logging
-- [ ] Insert logging pages
+  ![Alt text](app/assets/health.png "health page") ![Alt text](app/assets/exercise.png "exercise page")
+
 - Created a dashboard page to vizualize exercise and metrics tracking.
-- [ ] Insert dashboard page
+  ![Alt text](app/assets/dashboard.png "dashboard page")
 - Improve my data vizualization using Chart.js, here I experimented with line and bar charts to determine the best chart for each category.
 - Added engagement features: PR tracking, activity feed, and streak counting.
 
