@@ -74,11 +74,15 @@ _Phase 1: Creating a Barebone HTTP server_
 _Phase 2: Adding Features_
 
 - Built core application structure with interconnected pages.
-
-  ![Alt text](app/assets/nav.png "navigation")
+    <div align="center">
+    <img src="app/assets/nav.png" alt="nav">
+  </div>
 
 - Implemented health tracking features such as exercise, blood pressure, and blood glucose level logging
-  ![Alt text](app/assets/health.png "health page") ![Alt text](app/assets/exercise.png "exercise page")
+<div align="center">
+  <img src="app/assets/health.png" alt="health page" >
+  <img src="app/assets/exercise.png" alt="exercise page" >
+</div>
 
 - Created a dashboard page to vizualize exercise and metrics tracking.
   ![Alt text](app/assets/dashboard.png "dashboard page")
@@ -94,10 +98,11 @@ _Phase 3: Initial Deployment_
 _Final Phase: CI/CD_
 
 - Implemented user authentication system with signup and login.
-![Alt text](app/assets/signup.png "Sign up and Login Page")
-  <div align="center">
+
+<div align="center">
   <img src="app/assets/signup.png" alt="Sign up and Login Page" width="400">
 </div>
+
 - Updated data model with user associations for the application.
 - Refined testing approach using Postman API for backend testing.
 
