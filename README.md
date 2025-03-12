@@ -57,8 +57,10 @@ Here are some of the dashboard designs that caught my attention:
 
 In the first week of my project, I planned on some of the key features I plan to add in my web app, this is done through wireframing and experimenting with different UIs. Most of my planning was done in Excalidraw as I could easily brainstorm and collaborate ideas.
 
-![Alt text](app/assets/UI-wireframe.png "wireframe")
-![Alt text](app/assets/version-control.png "git")
+<div align="center">
+  <img src="app/assets/UI-wireframe.png" alt="wireframe" height = "400">
+  <img src="app/assets/version-control.png" alt="vc" height = "400">
+</div>
 
 **Development Process:** The development process was an interesting one, being able to implement code was both scary and exciting at the same time. It was done is several phases:
 
@@ -74,9 +76,9 @@ _Phase 1: Creating a Barebone HTTP server_
 _Phase 2: Adding Features_
 
 - Built core application structure with interconnected pages.
-    <div align="center">
+<div align="center">
     <img src="app/assets/nav.png" alt="nav">
-  </div>
+</div>
 
 - Implemented health tracking features such as exercise, blood pressure, and blood glucose level logging
 <div align="center">
